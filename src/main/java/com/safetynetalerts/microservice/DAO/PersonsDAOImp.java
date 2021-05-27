@@ -1,19 +1,24 @@
 package com.safetynetalerts.microservice.DAO;
 
+import com.safetynetalerts.microservice.datasource.DataBase;
+import com.safetynetalerts.microservice.datasource.DataBaseManager;
 import com.safetynetalerts.microservice.model.Persons;
 import com.safetynetalerts.microservice.util.JSonManager;
 import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Repository
 public class PersonsDAOImp implements PersonsDAO {
 
+    private DataBase dataBase = DataBaseManager.INSTANCE.getDataBase();
+    private Set<Persons> persons = dataBase.getPersons();
+
     @Override
-    public List<Persons> findAll() throws IOException {
-        List<Persons> persons = JSonManager.getListPersons();
+    public Set<Persons> findAll() throws IOException {
+        //List<Persons> persons = JSonManager.getListPersons();
         return persons;
     }
 

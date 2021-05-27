@@ -1,11 +1,19 @@
 package com.safetynetalerts.microservice.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.jsoniter.annotation.JsonCreator;
+import com.jsoniter.annotation.JsonProperty;
+
+@JsonTypeName("firestations")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class FireStations {
 
     private String address;
-    private String station;
+    private int station;
 
-    public FireStations(String address, String station) {
+    @JsonCreator
+    public FireStations(@JsonProperty("address") final String address,@JsonProperty("station") final int station) {
         this.address = address;
         this.station = station;
     }
@@ -14,15 +22,15 @@ public class FireStations {
         return address;
     }
 
-    public String getStation() {
+    public int getStation() {
         return station;
     }
 
-    public void setAddress(String address) {
+    public void setAddress(final String address) {
         this.address = address;
     }
 
-    public void setStation(String station) {
+    public void setStation(final int station) {
         this.station = station;
     }
 }

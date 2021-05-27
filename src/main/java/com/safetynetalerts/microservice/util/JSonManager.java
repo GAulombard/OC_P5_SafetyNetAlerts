@@ -1,5 +1,6 @@
 package com.safetynetalerts.microservice.util;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jsoniter.JsonIterator;
 import com.jsoniter.any.Any;
 import com.safetynetalerts.microservice.model.FireStations;
@@ -13,7 +14,10 @@ import java.util.List;
 
 public class JSonManager {
 
-
+    //protected static final ObjectMapper mapper = new ObjectMapper();
+    //List<Persons>  persons =  mapper.readValue(File, List<Persons>);
+    //String jsonString mapper.writeValue(File,"listPersone");
+    //Synchronized
 
     public static List<Persons> getListPersons() throws IOException {
         String filePath = "data/data.json";
@@ -25,7 +29,7 @@ public class JSonManager {
         List<Persons> persons = new ArrayList<>();
 
         personAny.forEach(a -> persons.add(new Persons(a.get("firstName").toString(), a.get("lastName").toString(), a.get("phone").toString(), a.get("zip").toString(), a.get("address").toString(), a.get("city").toString(), a.get("email").toString())));
-        persons.forEach(p -> System.out.println("Name : "+p.getFirstName()+" "+p.getLastName()+" ; Address : "+p.getAddress()+" "+p.getZip()+" "+p.getCity()+" ; Phone : "+p.getPhone()));
+        //persons.forEach(p -> System.out.println("Name : "+p.getFirstName()+" "+p.getLastName()+" ; Address : "+p.getAddress()+" "+p.getZip()+" "+p.getCity()+" ; Phone : "+p.getPhone()));
 
         return persons;
     }
@@ -39,8 +43,8 @@ public class JSonManager {
         Any fireStationsAny = any.get("firestations");
         List<FireStations> fireStations = new ArrayList<>();
 
-        fireStationsAny.forEach(a -> fireStations.add(new FireStations(a.get("address").toString(), a.get("station").toString())));
-        fireStations.forEach(p->System.out.println("Address : "+p.getAddress()+" ; Station : "+p.getStation()));
+        fireStationsAny.forEach(a -> fireStations.add(new FireStations(a.get("address").toString(), a.get("station").toInt())));
+        //fireStations.forEach(p->System.out.println("Address : "+p.getAddress()+" ; Station : "+p.getStation()));
 
         return fireStations;
     }

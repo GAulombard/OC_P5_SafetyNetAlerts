@@ -1,5 +1,12 @@
 package com.safetynetalerts.microservice.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.jsoniter.annotation.JsonCreator;
+import com.jsoniter.annotation.JsonProperty;
+
+@JsonTypeName("persons")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Persons {
 
     private String firstName;
@@ -10,7 +17,8 @@ public class Persons {
     private String city;
     private String email;
 
-    public Persons(String firstName, String lastName, String phone, String zip, String address, String city, String email) {
+    @JsonCreator
+    public Persons(@JsonProperty("firstname") final String firstName,@JsonProperty("lastname") final String lastName,@JsonProperty("phone") final String phone,@JsonProperty("zip") final String zip,@JsonProperty("address") final String address,@JsonProperty("city") final String city,@JsonProperty("email") final String email) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.phone = phone;
@@ -48,31 +56,31 @@ public class Persons {
         return email;
     }
 
-    public void setFirstName(String firstName) {
+    public void setFirstName(final String firstName) {
         this.firstName = firstName;
     }
 
-    public void setLastName(String lastName) {
+    public void setLastName(final String lastName) {
         this.lastName = lastName;
     }
 
-    public void setPhone(String phone) {
+    public void setPhone(final String phone) {
         this.phone = phone;
     }
 
-    public void setZip(String zip) {
+    public void setZip(final String zip) {
         this.zip = zip;
     }
 
-    public void setAddress(String address) {
+    public void setAddress(final String address) {
         this.address = address;
     }
 
-    public void setCity(String city) {
+    public void setCity(final String city) {
         this.city = city;
     }
 
-    public void setEmail(String email) {
+    public void setEmail(final String email) {
         this.email = email;
     }
 }
