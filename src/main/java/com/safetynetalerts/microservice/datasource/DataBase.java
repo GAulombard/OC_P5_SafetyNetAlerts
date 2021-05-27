@@ -1,5 +1,6 @@
 package com.safetynetalerts.microservice.datasource;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.jsoniter.annotation.JsonCreator;
 import com.jsoniter.annotation.JsonProperty;
 import com.safetynetalerts.microservice.model.FireStations;
@@ -8,10 +9,15 @@ import com.safetynetalerts.microservice.model.Persons;
 
 import java.util.Set;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class DataBase {
     private Set<Persons> persons;
     private Set<FireStations> fireStations;
     private Set<MedicalRecords> medicalRecords;
+
+    public DataBase() {
+        super();
+    }
 
     @JsonCreator
     DataBase(@JsonProperty("persons") final Set<Persons> persons,@JsonProperty("firestations") final Set<FireStations> fireStations,@JsonProperty("medicalrecords") final Set<MedicalRecords> medicalRecords) {

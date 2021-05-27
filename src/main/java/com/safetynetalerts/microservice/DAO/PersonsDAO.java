@@ -12,5 +12,8 @@ public interface PersonsDAO {
 
     Persons findByPhone(String phone) throws IOException;
 
+    boolean save(Persons person);
+
+    boolean update(Persons person);
 
 }

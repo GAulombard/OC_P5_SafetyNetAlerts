@@ -10,6 +10,7 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.jsoniter.annotation.JsonCreator;
 import com.jsoniter.annotation.JsonProperty;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @JsonTypeName("medicalrecords")
@@ -18,12 +19,16 @@ public class MedicalRecords {
 
     private String firstName;
     private String lastName;
-    private LocalDate birthDate;
+    private Date birthDate;
     private List<String> medications;
     private List<String> allergies;
 
+    public MedicalRecords(){
+        super();
+    }
+
     @JsonCreator
-    public MedicalRecords(@JsonProperty("firstname") final String firstName, @JsonProperty("lastname") final String lastName, @JsonDeserialize(using = LocalDateDeserializer.class) @JsonSerialize(using = LocalDateSerializer.class) @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MM/dd/yyyy") @JsonProperty("birthdate") final LocalDate birthDate, @JsonProperty("medications") final List<String> medication, @JsonProperty("allergies") final List<String> allergies) {
+    public MedicalRecords(@JsonProperty("firstname") final String firstName, @JsonProperty("lastname") final String lastName, @JsonDeserialize(using = LocalDateDeserializer.class) @JsonSerialize(using = LocalDateSerializer.class) @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MM/dd/yyyy") @JsonProperty("birthdate") final Date birthDate, @JsonProperty("medications") final List<String> medication, @JsonProperty("allergies") final List<String> allergies) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthDate = birthDate;
@@ -47,11 +52,11 @@ public class MedicalRecords {
         this.lastName = lastName;
     }
 
-    public LocalDate getBirthDate() {
+    public Date getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(final LocalDate birthDate) {
+    public void setBirthDate(final Date birthDate) {
         this.birthDate = birthDate;
     }
 

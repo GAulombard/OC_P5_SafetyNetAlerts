@@ -12,6 +12,10 @@ public class FireStations {
     private String address;
     private int station;
 
+    public FireStations(){
+        super();
+    }
+
     @JsonCreator
     public FireStations(@JsonProperty("address") final String address,@JsonProperty("station") final int station) {
         this.address = address;

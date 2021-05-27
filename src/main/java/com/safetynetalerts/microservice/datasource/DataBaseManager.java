@@ -12,6 +12,7 @@ public enum DataBaseManager {
 
     private DataBase dataBase;
 
+
     DataBaseManager() {
         ObjectMapper objectMapper = new ObjectMapper();
         //String url = "src/main/resources/data.json";

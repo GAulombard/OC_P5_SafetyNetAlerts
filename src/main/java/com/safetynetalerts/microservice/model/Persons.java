@@ -17,6 +17,10 @@ public class Persons {
     private String city;
     private String email;
 
+    public Persons(){
+        super();
+    }
+
     @JsonCreator
     public Persons(@JsonProperty("firstname") final String firstName,@JsonProperty("lastname") final String lastName,@JsonProperty("phone") final String phone,@JsonProperty("zip") final String zip,@JsonProperty("address") final String address,@JsonProperty("city") final String city,@JsonProperty("email") final String email) {
         this.firstName = firstName;
