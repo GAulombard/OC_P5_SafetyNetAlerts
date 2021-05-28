@@ -29,4 +29,9 @@ public enum DataBaseManager {
     public DataBase getDataBase() {
         return dataBase;
     }
+
+    //TODO: update DataBase
+    public void updateDataBase() {
+
+    }
 }

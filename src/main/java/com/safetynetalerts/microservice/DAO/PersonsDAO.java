@@ -16,4 +16,8 @@ public interface PersonsDAO {
 
     boolean update(Persons person);
 
+    Persons findByFirstAndLastName(String firstName, String lastName);
+
+    boolean delete(final String firstName, final String lastName);
+
 }
