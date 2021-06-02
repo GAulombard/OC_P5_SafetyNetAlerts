@@ -54,7 +54,7 @@ public class PersonsController {
 
     @DeleteMapping(value="person/{firstName}_{lastName}")
     public void deletePerson(@PathVariable final String firstName, @PathVariable final String lastName){
-        if (personsDAO.delete(firstName,lastName)) {
+        if (personsDAO.deleteByFirstAndLastName(firstName,lastName)) {
             LOGGER.info("person deleted");
         }
     }

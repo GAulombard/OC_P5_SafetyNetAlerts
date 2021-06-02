@@ -8,10 +8,8 @@ import java.util.Set;
 
 
 @Repository
-public interface FireStationsDAO {
+public interface FireStationsDAO extends DAO<FireStations>{
 
-    boolean save(FireStations fireStations);
-
-    Set<FireStations> findAll() throws IOException;
+    boolean delete();
 
 }

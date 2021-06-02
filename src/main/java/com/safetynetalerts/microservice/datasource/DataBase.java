@@ -7,6 +7,7 @@ import com.safetynetalerts.microservice.model.FireStations;
 import com.safetynetalerts.microservice.model.MedicalRecords;
 import com.safetynetalerts.microservice.model.Persons;
 
+
 import java.util.Set;
 
 @JsonIgnoreProperties(ignoreUnknown = true)

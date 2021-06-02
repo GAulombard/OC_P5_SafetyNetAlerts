@@ -1,5 +1,6 @@
-package com.safetynetalerts.microservice.DAO;
+package com.safetynetalerts.microservice.DAO.Implements;
 
+import com.safetynetalerts.microservice.DAO.PersonsDAO;
 import com.safetynetalerts.microservice.datasource.DataBase;
 import com.safetynetalerts.microservice.datasource.DataBaseManager;
 import com.safetynetalerts.microservice.model.Persons;
@@ -42,7 +43,7 @@ public class PersonsDAOImp implements PersonsDAO {
     //TODO: retourner l'element créé
     @Override
     public boolean update(Persons person) {
-        if(delete(person.getFirstName(),person.getLastName())){
+        if(deleteByFirstAndLastName(person.getFirstName(),person.getLastName())){
             return persons.add(person);
         }
         else return false;
@@ -58,7 +59,7 @@ public class PersonsDAOImp implements PersonsDAO {
     }
 
     @Override
-    public boolean delete(final String firstName, final String lastName) {
+    public boolean deleteByFirstAndLastName(final String firstName, final String lastName) {
         Persons result = findByFirstAndLastName(firstName,lastName);
         persons.remove(result);
         return true;
