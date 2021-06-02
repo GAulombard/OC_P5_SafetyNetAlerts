@@ -39,10 +39,10 @@ public class PersonsDAOImp implements PersonsDAO {
         return persons.add(person);
     }
 
-    //TODO: retourner l'element créé,faire un findbyphone, remove puis add
+    //TODO: retourner l'element créé
     @Override
     public boolean update(Persons person) {
-        if(persons.remove(person)){
+        if(delete(person.getFirstName(),person.getLastName())){
             return persons.add(person);
         }
         else return false;

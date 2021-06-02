@@ -45,7 +45,11 @@ public class PersonsController {
 
     @PutMapping(value="person")
     public void updatePerson(@RequestBody Persons person) {
-        personsDAO.update(person);
+        if(personsDAO.update(person)) {
+            LOGGER.info("person updated");
+        } else {
+            LOGGER.info("ERROR person cannot be updated");
+        }
     }
 
     @DeleteMapping(value="person/{firstName}_{lastName}")
