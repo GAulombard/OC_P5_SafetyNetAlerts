@@ -1,8 +1,8 @@
 package com.safetynetalerts.microservice.datasource;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.jsoniter.annotation.JsonCreator;
-import com.jsoniter.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.safetynetalerts.microservice.model.FireStations;
 import com.safetynetalerts.microservice.model.MedicalRecords;
 import com.safetynetalerts.microservice.model.Persons;
@@ -21,7 +21,7 @@ public class DataBase {
     }
 
     @JsonCreator
-    DataBase(@JsonProperty("persons") final Set<Persons> persons,@JsonProperty("firestations") final Set<FireStations> fireStations,@JsonProperty("medicalrecords") final Set<MedicalRecords> medicalRecords) {
+    DataBase(@JsonProperty("persons") final Set<Persons> persons, @JsonProperty("firestations") final Set<FireStations> fireStations, @JsonProperty("medicalrecords") final Set<MedicalRecords> medicalRecords) {
         this.persons = persons;
         this.fireStations = fireStations;
         this.medicalRecords = medicalRecords;
@@ -49,5 +49,10 @@ public class DataBase {
 
     public void setMedicalRecords(final Set<MedicalRecords> medicalRecords) {
         this.medicalRecords = medicalRecords;
+    }
+
+    @Override
+    public String toString() {
+        return ""+persons+"\n"+fireStations+"\n"+medicalRecords+"";
     }
 }

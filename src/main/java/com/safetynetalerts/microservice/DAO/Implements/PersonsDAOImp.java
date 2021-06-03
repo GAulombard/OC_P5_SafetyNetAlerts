@@ -61,7 +61,6 @@ public class PersonsDAOImp implements PersonsDAO {
     @Override
     public boolean deleteByFirstAndLastName(final String firstName, final String lastName) {
         Persons result = findByFirstAndLastName(firstName,lastName);
-        persons.remove(result);
-        return true;
+        return persons.remove(result);
     }
 }

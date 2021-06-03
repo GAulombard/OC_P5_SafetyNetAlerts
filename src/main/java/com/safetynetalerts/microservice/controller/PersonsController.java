@@ -1,14 +1,21 @@
 package com.safetynetalerts.microservice.controller;
 
 import com.safetynetalerts.microservice.DAO.PersonsDAO;
+import com.safetynetalerts.microservice.exceptions.AlreadyExistException;
+import com.safetynetalerts.microservice.exceptions.NotFoundException;
 import com.safetynetalerts.microservice.model.Persons;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.net.URI;
 import java.util.Set;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import javax.validation.Valid;
 
 @RestController
 public class PersonsController {
@@ -18,7 +25,7 @@ public class PersonsController {
     @Autowired
     private PersonsDAO personsDAO;
 
-    //persons
+
     @GetMapping(value = "persons")
     public Set<Persons> showListPersons() throws IOException {
         Set<Persons> result = personsDAO.findAll();
@@ -26,36 +33,55 @@ public class PersonsController {
         return result;
     }
 
-    //persons/{phone}
+
     @GetMapping(value = "person/{phone}")
     public Persons showPersonsByPhone(@PathVariable String phone) throws IOException {
         return personsDAO.findByPhone(phone);
     }
 
-    //person
+
     @PostMapping(value="person")
-    public void createPerson(@RequestBody Persons newPerson) {
+    public ResponseEntity<Void> createPerson(@Valid @RequestBody Persons newPerson) {
         if(personsDAO.save(newPerson)) {
             LOGGER.info("new person saved : {}",newPerson.toString());
+            URI location = ServletUriComponentsBuilder
+                    .fromCurrentRequest()
+                    .path("/{firstName}{lastName}")
+                    .buildAndExpand(newPerson.getFirstName(),newPerson.getLastName())
+                    .toUri();
+            return ResponseEntity.created(location).build();
         }
         else {
-            LOGGER.info("ERROR, person cannot be saved");
+            RuntimeException e = new AlreadyExistException("ERROR :"+newPerson.getFirstName()+" "+newPerson.getLastName()+" already exist");
+            LOGGER.error(e);
+            throw e;
+            //return ResponseEntity.noContent().build();
         }
     }
 
     @PutMapping(value="person")
-    public void updatePerson(@RequestBody Persons person) {
+    public ResponseEntity<Void> updatePerson(@RequestBody Persons person) {
         if(personsDAO.update(person)) {
             LOGGER.info("person updated : {}",person.toString());
+            return ResponseEntity.ok().build();
         } else {
-            LOGGER.info("ERROR person cannot be updated");
+            RuntimeException e = new NotFoundException("ERROR :"+person.getFirstName()+" "+person.getLastName()+" doesn't exist and cannot be updated");
+            LOGGER.error(e);
+            throw e;
+            //return ResponseEntity.notFound().build();
         }
     }
 
     @DeleteMapping(value="person/{firstName}_{lastName}")
-    public void deletePerson(@PathVariable final String firstName, @PathVariable final String lastName){
+    public ResponseEntity<Void> deletePerson(@PathVariable final String firstName, @PathVariable final String lastName){
         if (personsDAO.deleteByFirstAndLastName(firstName,lastName)) {
-            LOGGER.info("person deleted");
+            LOGGER.info("person deleted :"+firstName+" "+lastName);
+            return ResponseEntity.ok().build();
+        } else {
+            RuntimeException e = new NotFoundException("ERROR :"+firstName+" "+lastName+" doesn't exist and cannot be deleted");
+            LOGGER.error(e);
+            throw e;
+            //return ResponseEntity.notFound().build();
         }
     }
 

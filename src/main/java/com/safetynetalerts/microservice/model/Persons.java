@@ -1,17 +1,23 @@
 package com.safetynetalerts.microservice.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.jsoniter.annotation.JsonCreator;
-import com.jsoniter.annotation.JsonProperty;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Positive;
 
 @JsonTypeName("persons")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Persons {
 
+    @NotBlank(message = "First name needed")
     private String firstName;
+    @NotBlank(message = "Last name needed")
     private String lastName;
     private String phone;
+    @Positive(message = "Zip should be positive")
     private String zip;
     private String address;
     private String city;
@@ -22,7 +28,7 @@ public class Persons {
     }
 
     @JsonCreator
-    public Persons(@JsonProperty("firstname") final String firstName,@JsonProperty("lastname") final String lastName,@JsonProperty("phone") final String phone,@JsonProperty("zip") final String zip,@JsonProperty("address") final String address,@JsonProperty("city") final String city,@JsonProperty("email") final String email) {
+    public Persons(@JsonProperty("firstName") final String firstName, @JsonProperty("lastName") final String lastName, @JsonProperty("phone") final String phone, @JsonProperty("zip") final String zip, @JsonProperty("address") final String address, @JsonProperty("city") final String city, @JsonProperty("email") final String email) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.phone = phone;

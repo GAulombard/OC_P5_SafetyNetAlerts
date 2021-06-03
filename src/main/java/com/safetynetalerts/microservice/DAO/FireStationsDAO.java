@@ -3,13 +3,19 @@ package com.safetynetalerts.microservice.DAO;
 import com.safetynetalerts.microservice.model.FireStations;
 import org.springframework.stereotype.Repository;
 
-import java.io.IOException;
 import java.util.Set;
 
 
 @Repository
 public interface FireStationsDAO extends DAO<FireStations>{
 
-    boolean delete();
+    Set<FireStations> findFireStationsByStationNumber(int stationNumber);
 
+    Set<FireStations> findFireStationsByAddress(String stationAddress);
+
+    boolean deleteFireStationsByNumber(int stationNumber);
+
+    boolean deleteFireStationsByAddress(String stationAddress);
+
+    boolean delete(FireStations fireStation);
 }

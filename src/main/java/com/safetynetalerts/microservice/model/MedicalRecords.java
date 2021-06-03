@@ -1,14 +1,11 @@
 package com.safetynetalerts.microservice.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
-import com.jsoniter.annotation.JsonCreator;
-import com.jsoniter.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.deser.std.DateDeserializers;
+import com.fasterxml.jackson.databind.ser.std.DateSerializer;
+
 import java.util.Date;
 import java.util.List;
 
@@ -27,7 +24,7 @@ public class MedicalRecords {
     }
 
     @JsonCreator
-    public MedicalRecords(@JsonProperty("firstname") final String firstName, @JsonProperty("lastname") final String lastName, @JsonDeserialize(using = LocalDateDeserializer.class) @JsonSerialize(using = LocalDateSerializer.class) @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MM/dd/yyyy") @JsonProperty("birthdate") final Date birthDate, @JsonProperty("medications") final List<String> medication, @JsonProperty("allergies") final List<String> allergies) {
+    public MedicalRecords(@JsonProperty("firstname") final String firstName, @JsonProperty("lastname") final String lastName, @JsonDeserialize(using = DateDeserializers.DateDeserializer.class) @JsonSerialize(using = DateSerializer.class) @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MM/dd/yyyy") @JsonProperty("birthdate") final Date birthDate, @JsonProperty("medications") final List<String> medication, @JsonProperty("allergies") final List<String> allergies) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthDate = birthDate;
@@ -73,5 +70,10 @@ public class MedicalRecords {
 
     public void setAllergies(final List<String> allergies) {
         this.allergies = allergies;
+    }
+
+    @Override
+    public String toString() {
+        return ""+firstName+" "+lastName+" / birth date: "+birthDate+" / medications: "+medications+" / allergies: "+allergies+"\n";
     }
 }

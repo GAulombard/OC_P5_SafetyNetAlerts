@@ -1,16 +1,18 @@
 package com.safetynetalerts.microservice.controller;
 
 import com.safetynetalerts.microservice.DAO.FireStationsDAO;
+import com.safetynetalerts.microservice.exceptions.AlreadyExistException;
+import com.safetynetalerts.microservice.exceptions.NotFoundException;
 import com.safetynetalerts.microservice.model.FireStations;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.IOException;
+import java.net.URI;
 import java.util.Set;
 
 @RestController
@@ -29,12 +31,56 @@ public class FireStationsController {
     }
 
     @PostMapping(value="firestation")
-    public void createFireStation(@RequestBody FireStations newFireStation) {
+    public ResponseEntity<Void> createFireStation(@RequestBody FireStations newFireStation) {
         if(fireStationsDAO.save(newFireStation)) {
-            LOGGER.info("new fire station saved :",newFireStation.toString());
+            LOGGER.info("new fire station saved : {}",newFireStation.toString());
+            URI location = ServletUriComponentsBuilder
+                    .fromCurrentRequest()
+                    .path("/{address}")
+                    .buildAndExpand(newFireStation.getAddress())
+                    .toUri();
+            return ResponseEntity.created(location).build();
         }
         else {
-            LOGGER.info("ERROR new fire station cannot be saved");
+            RuntimeException e = new AlreadyExistException("ERROR : station" + newFireStation.getStation() + " " + newFireStation.getAddress() + " already exist");
+            LOGGER.error(e);
+            throw e;
+        }
+    }
+
+    @DeleteMapping(value="firestation/station/{station}")
+    public ResponseEntity<Void> deleteByStation(@PathVariable final int station) {
+        if(fireStationsDAO.deleteFireStationsByNumber(station)) {
+            LOGGER.info(" fire stations deleted");
+            return ResponseEntity.ok().build();
+        } else {
+            RuntimeException e = new NotFoundException("ERROR : firestation " + station + " doesn't exist");
+            LOGGER.error(e);
+            throw e;
+        }
+    }
+
+    @DeleteMapping(value="firestation/address/{address}")
+    public ResponseEntity<Void> deleteByAddress(@PathVariable final String address) {
+        if(fireStationsDAO.deleteFireStationsByAddress(address)) {
+            LOGGER.info(" fire stations deleted");
+            return ResponseEntity.ok().build();
+        } else {
+            RuntimeException e = new NotFoundException("ERROR : firestation " + address + " doesn't exist");
+            LOGGER.error(e);
+            throw e;
+        }
+    }
+
+    @PutMapping(value="firestation")
+    public ResponseEntity<Void> updateStationNumber(@RequestBody final FireStations fireStation) {
+        if(fireStationsDAO.update(fireStation)) {
+            LOGGER.info(" fire station updated");
+            return ResponseEntity.ok().build();
+        } else {
+            RuntimeException e = new NotFoundException("ERROR : firestation " + fireStation.toString() + " doesn't exist");
+            LOGGER.error(e);
+            throw e;
         }
     }
 

@@ -1,16 +1,19 @@
 package com.safetynetalerts.microservice.controller;
 
 import com.safetynetalerts.microservice.DAO.MedicalRecordsDAO;
+import com.safetynetalerts.microservice.exceptions.AlreadyExistException;
+import com.safetynetalerts.microservice.exceptions.NotFoundException;
 import com.safetynetalerts.microservice.model.MedicalRecords;
+import com.safetynetalerts.microservice.model.Persons;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.IOException;
+import java.net.URI;
 import java.util.Set;
 
 @RestController
@@ -25,18 +28,51 @@ public class MedicalRecordsController {
     @GetMapping(value = "medicalrecords")
     public Set<MedicalRecords> showListMedicalRecords() throws IOException {
         Set<MedicalRecords> result = medicalRecordsDAO.findAll();
-        LOGGER.info("Get the list of all medical records : \n{}",result.toString());
+        LOGGER.info("Get the list of all medical records : \n{}", result.toString());
         return result;
     }
 
-    @PostMapping(value="medicalrecord")
-    public void createMedicalRecord(@RequestBody MedicalRecords newMedicalRecord) {
-        if(medicalRecordsDAO.save(newMedicalRecord)) {
-            LOGGER.info("new medical record saved : {}",newMedicalRecord.toString());
-        }
-        else {
-            LOGGER.info("ERROR new medical record cannot be saved");
+    @PostMapping(value = "medicalrecord")
+    public ResponseEntity<Void> createMedicalRecord(@RequestBody MedicalRecords newMedicalRecord) {
+        if (medicalRecordsDAO.save(newMedicalRecord)) {
+            LOGGER.info("new medical record saved : {}", newMedicalRecord.toString());
+            URI location = ServletUriComponentsBuilder
+                    .fromCurrentRequest()
+                    .path("/{firstName}{lastName}")
+                    .buildAndExpand(newMedicalRecord.getFirstName(), newMedicalRecord.getLastName())
+                    .toUri();
+            return ResponseEntity.created(location).build();
+        } else {
+            RuntimeException e = new AlreadyExistException("ERROR :" + newMedicalRecord.getFirstName() + " " + newMedicalRecord.getLastName() + " already exist");
+            LOGGER.error(e);
+            throw e;
+            //return ResponseEntity.noContent().build();
         }
     }
 
+    @DeleteMapping(value = "medicalrecord/{firstName}_{lastName}")
+    public ResponseEntity<Void> deleteMedicalRecord(@PathVariable final String firstName, @PathVariable final String lastName) {
+        String medicalRecordDeleted = medicalRecordsDAO.findByFirstAndLastName(firstName, lastName).toString();
+        if (medicalRecordsDAO.deleteByFirstAndLastName(firstName, lastName)) {
+            LOGGER.info("medical record deleted : {}", medicalRecordDeleted);
+            return ResponseEntity.ok().build();
+        } else {
+            RuntimeException e = new NotFoundException("ERROR : medical record for" + firstName + " " + lastName + " doesn't exist");
+            LOGGER.error(e);
+            throw e;
+        }
+    }
+
+    @PutMapping(value="medicalrecord")
+    public ResponseEntity<Void> updateMedicalRecord(@RequestBody MedicalRecords medicalRecord) {
+        if(medicalRecordsDAO.update(medicalRecord)) {
+            LOGGER.info("medical record updated : {}",medicalRecord.toString());
+            return ResponseEntity.ok().build();
+        } else {
+            RuntimeException e = new NotFoundException("ERROR : medical record for "+medicalRecord.getFirstName()+" "+medicalRecord.getLastName()+" doesn't exist and cannot be updated");
+            LOGGER.error(e);
+            throw e;
+            //return ResponseEntity.notFound().build();
+        }
+    }
 }
