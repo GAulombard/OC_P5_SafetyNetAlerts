@@ -22,7 +22,7 @@ public class MedicalRecordsDAOImp implements MedicalRecordsDAO {
 
     @Override
     public Set<MedicalRecords> findAll() throws IOException {
-        return null;
+        return medicalRecords;
     }
 
     @Override

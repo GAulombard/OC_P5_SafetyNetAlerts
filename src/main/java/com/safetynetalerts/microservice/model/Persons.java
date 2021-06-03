@@ -87,4 +87,9 @@ public class Persons {
     public void setEmail(final String email) {
         this.email = email;
     }
+
+    @Override
+    public String toString() {
+        return ""+firstName+" "+lastName+" / "+address+" "+zip+" "+city+" / email: "+email+" / phone: "+phone+"\n";
+    }
 }

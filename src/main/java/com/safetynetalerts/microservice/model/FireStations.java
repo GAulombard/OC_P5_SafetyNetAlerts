@@ -37,4 +37,9 @@ public class FireStations {
     public void setStation(final int station) {
         this.station = station;
     }
+
+    @Override
+    public String toString() {
+        return "[station= " + station + ", address= " + address + "]";
+    }
 }

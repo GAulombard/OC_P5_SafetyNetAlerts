@@ -22,7 +22,7 @@ public class PersonsController {
     @GetMapping(value = "persons")
     public Set<Persons> showListPersons() throws IOException {
         Set<Persons> result = personsDAO.findAll();
-        LOGGER.info("Get the list of all persons : {}",result);
+        LOGGER.info("Get the list of all persons :\n {}",result.toString());
         return result;
     }
 
@@ -36,17 +36,17 @@ public class PersonsController {
     @PostMapping(value="person")
     public void createPerson(@RequestBody Persons newPerson) {
         if(personsDAO.save(newPerson)) {
-            LOGGER.info("new person saved :",newPerson);
+            LOGGER.info("new person saved : {}",newPerson.toString());
         }
         else {
-            LOGGER.info("ERROR new person cannot be saved");
+            LOGGER.info("ERROR, person cannot be saved");
         }
     }
 
     @PutMapping(value="person")
     public void updatePerson(@RequestBody Persons person) {
         if(personsDAO.update(person)) {
-            LOGGER.info("person updated");
+            LOGGER.info("person updated : {}",person.toString());
         } else {
             LOGGER.info("ERROR person cannot be updated");
         }
