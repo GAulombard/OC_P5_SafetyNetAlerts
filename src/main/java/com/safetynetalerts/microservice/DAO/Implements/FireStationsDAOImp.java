@@ -75,4 +75,17 @@ public class FireStationsDAOImp implements FireStationsDAO {
     public boolean delete(final FireStations fireStation) {
         return fireStations.remove(fireStation);
     }
+
+    @Override
+    public Set<String> getListOfAllAddressByStationNumber(final int stationNumber) {
+        Set<String> result = new HashSet<>();
+        fireStations.iterator().forEachRemaining(fireStation -> {
+            if(fireStation.getStation() == stationNumber) {
+                result.add(fireStation.getAddress());
+            }
+        });
+
+        return result;
+
+    }
 }

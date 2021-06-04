@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.io.IOException;
 import java.net.URI;
 import java.util.Set;
@@ -31,7 +32,7 @@ public class FireStationsController {
     }
 
     @PostMapping(value="firestation")
-    public ResponseEntity<Void> createFireStation(@RequestBody FireStations newFireStation) {
+    public ResponseEntity<Void> createFireStation(@Valid @RequestBody FireStations newFireStation) {
         if(fireStationsDAO.save(newFireStation)) {
             LOGGER.info("new fire station saved : {}",newFireStation.toString());
             URI location = ServletUriComponentsBuilder
@@ -73,7 +74,7 @@ public class FireStationsController {
     }
 
     @PutMapping(value="firestation")
-    public ResponseEntity<Void> updateStationNumber(@RequestBody final FireStations fireStation) {
+    public ResponseEntity<Void> updateStationNumber(@Valid @RequestBody final FireStations fireStation) {
         if(fireStationsDAO.update(fireStation)) {
             LOGGER.info(" fire station updated");
             return ResponseEntity.ok().build();

@@ -4,7 +4,6 @@ import com.safetynetalerts.microservice.DAO.MedicalRecordsDAO;
 import com.safetynetalerts.microservice.exceptions.AlreadyExistException;
 import com.safetynetalerts.microservice.exceptions.NotFoundException;
 import com.safetynetalerts.microservice.model.MedicalRecords;
-import com.safetynetalerts.microservice.model.Persons;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.io.IOException;
 import java.net.URI;
 import java.util.Set;
@@ -33,7 +33,7 @@ public class MedicalRecordsController {
     }
 
     @PostMapping(value = "medicalrecord")
-    public ResponseEntity<Void> createMedicalRecord(@RequestBody MedicalRecords newMedicalRecord) {
+    public ResponseEntity<Void> createMedicalRecord(@Valid @RequestBody MedicalRecords newMedicalRecord) {
         if (medicalRecordsDAO.save(newMedicalRecord)) {
             LOGGER.info("new medical record saved : {}", newMedicalRecord.toString());
             URI location = ServletUriComponentsBuilder
@@ -64,7 +64,7 @@ public class MedicalRecordsController {
     }
 
     @PutMapping(value="medicalrecord")
-    public ResponseEntity<Void> updateMedicalRecord(@RequestBody MedicalRecords medicalRecord) {
+    public ResponseEntity<Void> updateMedicalRecord(@Valid @RequestBody MedicalRecords medicalRecord) {
         if(medicalRecordsDAO.update(medicalRecord)) {
             LOGGER.info("medical record updated : {}",medicalRecord.toString());
             return ResponseEntity.ok().build();

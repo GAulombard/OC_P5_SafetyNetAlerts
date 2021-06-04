@@ -60,7 +60,7 @@ public class PersonsController {
     }
 
     @PutMapping(value="person")
-    public ResponseEntity<Void> updatePerson(@RequestBody Persons person) {
+    public ResponseEntity<Void> updatePerson(@Valid @RequestBody Persons person) {
         if(personsDAO.update(person)) {
             LOGGER.info("person updated : {}",person.toString());
             return ResponseEntity.ok().build();

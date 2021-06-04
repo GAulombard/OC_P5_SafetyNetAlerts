@@ -15,4 +15,7 @@ public interface PersonsDAO extends DAO<Persons> {
 
     boolean deleteByFirstAndLastName(final String firstName, final String lastName);
 
+    Set<Persons> getListOfAllPersonsByAddress(String address);
+
+    Set<Persons> findPersonsByAddress(String address);
 }
