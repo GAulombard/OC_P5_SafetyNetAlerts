@@ -40,6 +40,7 @@ public class URLSController {
         AtomicInteger nbrAdults = new AtomicInteger();
         AtomicInteger nbrChildren = new AtomicInteger();
 
+        //test commentaire
         if(coveredAddressList != null) {
             Set<Persons> personsCoveredByStation = new HashSet<>();
             coveredAddressList.iterator().forEachRemaining(address -> {
