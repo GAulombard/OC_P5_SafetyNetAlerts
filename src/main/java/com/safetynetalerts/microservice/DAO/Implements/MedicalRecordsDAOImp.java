@@ -3,6 +3,7 @@ package com.safetynetalerts.microservice.DAO.Implements;
 import com.safetynetalerts.microservice.DAO.MedicalRecordsDAO;
 import com.safetynetalerts.microservice.datasource.DataBase;
 import com.safetynetalerts.microservice.datasource.DataBaseManager;
+import com.safetynetalerts.microservice.model.DTO.MedicalBackgroundDTO;
 import com.safetynetalerts.microservice.model.MedicalRecords;
 import com.safetynetalerts.microservice.model.Persons;
 import org.springframework.stereotype.Repository;
@@ -50,6 +51,17 @@ public class MedicalRecordsDAOImp implements MedicalRecordsDAO {
         if (deleteByFirstAndLastName(medicalRecord.getFirstName(), medicalRecord.getLastName())) {
             return medicalRecords.add(medicalRecord);
         } else return false;
+    }
+
+    @Override
+    public MedicalBackgroundDTO getMedicalBackgroundByFirstAndLastName(final String firstName, final String lastName) {
+        MedicalBackgroundDTO result = new MedicalBackgroundDTO();
+        MedicalRecords medicalRecords = findByFirstAndLastName(firstName,lastName);
+
+        result.setMedicationsList(medicalRecords.getMedications());
+        result.setAllergiesList(medicalRecords.getAllergies());
+
+        return result;
     }
 
 }

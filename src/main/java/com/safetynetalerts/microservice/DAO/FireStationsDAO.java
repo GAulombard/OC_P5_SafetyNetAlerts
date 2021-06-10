@@ -13,6 +13,8 @@ public interface FireStationsDAO extends DAO<FireStations>{
 
     Set<FireStations> findFireStationsByAddress(String stationAddress);
 
+    int findFireStationsNumberByAddress(String stationAddress);
+
     boolean deleteFireStationsByNumber(int stationNumber);
 
     boolean deleteFireStationsByAddress(String stationAddress);
@@ -20,4 +22,6 @@ public interface FireStationsDAO extends DAO<FireStations>{
     boolean delete(FireStations fireStation);
 
     Set<String> getListOfAllAddressByStationNumber(int stationNumber);
+
+    Set<String> findAddressByStationNumber(int stationNumber);
 }

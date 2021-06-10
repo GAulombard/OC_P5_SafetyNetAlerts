@@ -4,10 +4,7 @@ import com.safetynetalerts.microservice.DAO.FireStationsDAO;
 import com.safetynetalerts.microservice.DAO.MedicalRecordsDAO;
 import com.safetynetalerts.microservice.DAO.PersonsDAO;
 import com.safetynetalerts.microservice.constants.Constants;
-import com.safetynetalerts.microservice.model.DTO.ChildAlertDTO;
-import com.safetynetalerts.microservice.model.DTO.PersonInfoDTO;
-import com.safetynetalerts.microservice.model.DTO.PersonNameDTO;
-import com.safetynetalerts.microservice.model.DTO.PersonsCoveredByStationListDTO;
+import com.safetynetalerts.microservice.model.DTO.*;
 import com.safetynetalerts.microservice.model.MedicalRecords;
 import com.safetynetalerts.microservice.model.Persons;
 import com.safetynetalerts.microservice.util.CalculateAge;
@@ -15,7 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 
+import java.net.InetSocketAddress;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -86,7 +86,6 @@ public class URLSController {
 
     }
 
-
     @GetMapping(value = "childAlert")
     public Set<ChildAlertDTO> getListOfChildrenByAddress(@RequestParam(value = "address") final String address) {
         Set<ChildAlertDTO> result = new HashSet<>();
@@ -126,8 +125,141 @@ public class URLSController {
         } else {
             return result;
         }
+    }
+
+    @GetMapping(value = "phoneAlert")
+    public Set<String> getAllPhoneByStationNumber(@RequestParam(value = "firestation") final int stationNumber) {
+        Set<String> result = new HashSet<>();
+        Set<String> allAddress = fireStationsDAO.getListOfAllAddressByStationNumber(stationNumber);
+        Set<Persons> allPersons = new HashSet<>();
+
+        if (allAddress != null) {
+            allAddress.iterator().forEachRemaining(address -> {
+                allPersons.addAll(personsDAO.getListOfAllPersonsByAddress(address));
+            });
+
+            allPersons.iterator().forEachRemaining(person -> {
+                result.add(person.getPhone());
+            });
+
+            return result;
+        } else {
+            return result;
+        }
+
+    }
+
+    @GetMapping(value = "fire")
+    public Set<FireDTO> getPersonsByAddressAndStation(@RequestParam(value = "address") final String address) {
+        Set<FireDTO> result = new HashSet<>();
+        Set<Persons> personsAtAddress = personsDAO.getListOfAllPersonsByAddress(address);
+
+        if (personsAtAddress != null) {
+            personsAtAddress.iterator().forEachRemaining(person -> {
+                int age = new CalculateAge().calculate(medicalRecordsDAO.findByFirstAndLastName(person.getFirstName(), person.getLastName()));
+
+                FireDTO fireDTO = new FireDTO();
+                fireDTO.setFirstName(person.getFirstName());
+                fireDTO.setLastName(person.getLastName());
+                fireDTO.setPhone(person.getPhone());
+                fireDTO.setStationNumber(fireStationsDAO.findFireStationsNumberByAddress(address));
+                fireDTO.setAge(age);
+                fireDTO.setMedicalBackgroundDTO(medicalRecordsDAO.getMedicalBackgroundByFirstAndLastName(person.getFirstName(), person.getLastName()));
+
+                result.add(fireDTO);
+            });
+
+            return result;
+        } else {
+            return result;
+        }
 
 
     }
 
+
+    @GetMapping(value = "flood/stations")
+    public Set<FloodDTO> getHomesByStationsNumber(@RequestParam(value = "stations") final int stationNumber) {
+        Set<FloodDTO> result = new HashSet<>();
+        Set<String> allAddressList = fireStationsDAO.findAddressByStationNumber(stationNumber);
+
+        if (allAddressList != null) {
+            allAddressList.iterator().forEachRemaining(address -> {
+                FloodDTO floodDTO = new FloodDTO();
+                Set<PersonInfoMedicalDTO> personInfoMedicalDTOList = new HashSet<>();
+                floodDTO.setAddress(address);
+                Set<Persons> personsAtAddress = personsDAO.getListOfAllPersonsByAddress(address);
+                personsAtAddress.iterator().forEachRemaining(person -> {
+                    int age = new CalculateAge().calculate(medicalRecordsDAO.findByFirstAndLastName(person.getFirstName(), person.getLastName()));
+
+                    PersonInfoMedicalDTO personInfoMedical = new PersonInfoMedicalDTO();
+                    personInfoMedical.setFirstName(person.getFirstName());
+                    personInfoMedical.setLastName(person.getLastName());
+                    personInfoMedical.setPhone(person.getPhone());
+                    personInfoMedical.setAge(age);
+                    personInfoMedical.setMedicalBackgroundDTO(medicalRecordsDAO.getMedicalBackgroundByFirstAndLastName(person.getFirstName(), person.getLastName()));
+                    personInfoMedicalDTOList.add(personInfoMedical);
+                    floodDTO.setPersonInfoMedical(personInfoMedicalDTOList);
+                });
+
+
+                //PersonInfoMedicalDTO personInfoMedicalDTO = new PersonInfoMedicalDTO();
+                //personInfoMedicalDTO.setMedicalBackgroundDTO();
+
+
+                result.add(floodDTO);
+            });
+
+            return result;
+        } else {
+            return result;
+        }
+
+
+    }
+
+    @GetMapping(value="personInfo")
+    public Set<PersonFullInfoDTO> getAllInformationByFirstAndLastName(@RequestParam(value="firstName") final String firstName,@RequestParam(value="lastName") final String lastName) {
+        Set<PersonFullInfoDTO> result = new HashSet<>();
+        Set<Persons> allPersons = personsDAO.findAllByFirstAndLastName(firstName,lastName);
+
+        if(allPersons!=null) {
+
+            allPersons.iterator().forEachRemaining(person -> {
+                int age = new CalculateAge().calculate(medicalRecordsDAO.findByFirstAndLastName(person.getFirstName(), person.getLastName()));
+
+                PersonFullInfoDTO personFullInfoDTO = new PersonFullInfoDTO();
+                personFullInfoDTO.setFirstName(person.getFirstName());
+                personFullInfoDTO.setLastName(person.getLastName());
+                personFullInfoDTO.setAge(age);
+                personFullInfoDTO.setAddress(person.getAddress());
+                personFullInfoDTO.setPhone(person.getPhone());
+                personFullInfoDTO.setEmail(person.getEmail());
+                personFullInfoDTO.setMedicalBackgroundDTO(medicalRecordsDAO.getMedicalBackgroundByFirstAndLastName(person.getFirstName(), person.getLastName()));
+
+                result.add(personFullInfoDTO);
+            });
+
+            return result;
+        } else {
+            return result;
+        }
+
+    }
+
+    @GetMapping(value = "communityEmail")
+    public List<String> getAllEmailByCity(@RequestParam(value = "city") final String city) {
+        List<String> result = new ArrayList<>();
+        Set<Persons> allPersons = personsDAO.getListOfAllPersonsByCity(city);
+
+        if (allPersons!=null) {
+            allPersons.iterator().forEachRemaining(person -> {
+                result.add(person.getEmail());
+            });
+
+            return result;
+        } else {
+            return result;
+        }
+    }
 }

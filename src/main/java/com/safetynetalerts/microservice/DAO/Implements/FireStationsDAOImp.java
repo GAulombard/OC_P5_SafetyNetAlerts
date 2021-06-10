@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Repository
 public class FireStationsDAOImp implements FireStationsDAO {
@@ -43,6 +44,18 @@ public class FireStationsDAOImp implements FireStationsDAO {
         }));
 
         return result;
+    }
+
+    @Override
+    public int findFireStationsNumberByAddress(final String stationAddress) {
+        AtomicInteger result = new AtomicInteger();
+        fireStations.iterator().forEachRemaining((fireStation -> {
+            if (fireStation.getAddress().equals(stationAddress)) {
+                result.set(fireStation.getStation());
+            }
+        }));
+
+        return result.get();
     }
 
     @Override
@@ -87,5 +100,17 @@ public class FireStationsDAOImp implements FireStationsDAO {
 
         return result;
 
+    }
+
+    @Override
+    public Set<String> findAddressByStationNumber(final int stationNumber) {
+        Set<String> result = new HashSet<>();
+        fireStations.iterator().forEachRemaining((fireStation -> {
+            if (fireStation.getStation() == stationNumber) {
+                result.add(fireStation.getAddress());
+            }
+        }));
+
+        return result;
     }
 }

@@ -1,5 +1,6 @@
 package com.safetynetalerts.microservice.DAO;
 
+import com.safetynetalerts.microservice.model.DTO.MedicalBackgroundDTO;
 import com.safetynetalerts.microservice.model.MedicalRecords;
 import org.springframework.stereotype.Repository;
 
@@ -10,4 +11,5 @@ public interface MedicalRecordsDAO extends DAO<MedicalRecords> {
 
     boolean deleteByFirstAndLastName(String firstName, String lastName);
 
+    MedicalBackgroundDTO getMedicalBackgroundByFirstAndLastName(String firstName, String lastName);
 }

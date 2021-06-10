@@ -92,4 +92,28 @@ public class PersonsDAOImp implements PersonsDAO {
         });
         return result;
     }
+
+    @Override
+    public Set<Persons> findAllByFirstAndLastName(final String firstName, final String lastName) {
+        Set<Persons> result = new HashSet<>();
+        persons.iterator().forEachRemaining((person) -> {
+            if (person.getFirstName().equals(firstName) && person.getLastName().equals(lastName)) {
+                result.add(person);
+            }
+        });
+        if (result.isEmpty()) return null;
+        return result;
+    }
+
+    @Override
+    public Set<Persons> getListOfAllPersonsByCity(final String city) {
+        Set<Persons> result = new HashSet<>();
+        persons.iterator().forEachRemaining(person -> {
+            if (person.getCity().equals(city)) {
+                result.add(person);
+            }
+        });
+
+        return result;
+    }
 }

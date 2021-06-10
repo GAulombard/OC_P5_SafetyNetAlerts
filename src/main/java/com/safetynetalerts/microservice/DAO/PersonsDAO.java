@@ -18,4 +18,8 @@ public interface PersonsDAO extends DAO<Persons> {
     Set<Persons> getListOfAllPersonsByAddress(String address);
 
     Set<Persons> findPersonsByAddress(String address);
+
+    Set<Persons> findAllByFirstAndLastName(String firstName, String lastName);
+
+    Set<Persons> getListOfAllPersonsByCity(String address);
 }
