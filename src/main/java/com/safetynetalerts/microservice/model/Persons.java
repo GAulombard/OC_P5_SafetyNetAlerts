@@ -56,19 +56,20 @@ public class Persons {
     /**
      * default constructor
      */
-    public Persons(){
+    public Persons() {
         super();
     }
 
     /**
      * Persons constructor
+     *
      * @param firstName first name
-     * @param lastName last name
-     * @param phone phone number
-     * @param zip ZIP code
-     * @param address address
-     * @param city city
-     * @param email email
+     * @param lastName  last name
+     * @param phone     phone number
+     * @param zip       ZIP code
+     * @param address   address
+     * @param city      city
+     * @param email     email
      */
     @JsonCreator
     public Persons(@JsonProperty("firstName") final String firstName, @JsonProperty("lastName") final String lastName, @JsonProperty("phone") final String phone, @JsonProperty("zip") final String zip, @JsonProperty("address") final String address, @JsonProperty("city") final String city, @JsonProperty("email") final String email) {
@@ -83,6 +84,7 @@ public class Persons {
 
     /**
      * getter first name
+     *
      * @return first name
      */
     public String getFirstName() {
@@ -91,6 +93,7 @@ public class Persons {
 
     /**
      * getter last name
+     *
      * @return last name
      */
     public String getLastName() {
@@ -99,6 +102,7 @@ public class Persons {
 
     /**
      * getter phone number
+     *
      * @return phone number
      */
     public String getPhone() {
@@ -107,6 +111,7 @@ public class Persons {
 
     /**
      * getter ZIP code
+     *
      * @return ZIP code
      */
     public String getZip() {
@@ -115,6 +120,7 @@ public class Persons {
 
     /**
      * getter address
+     *
      * @return address
      */
     public String getAddress() {
@@ -123,6 +129,7 @@ public class Persons {
 
     /**
      * getter city
+     *
      * @return city
      */
     public String getCity() {
@@ -131,6 +138,7 @@ public class Persons {
 
     /**
      * getter email
+     *
      * @return email
      */
     public String getEmail() {
@@ -139,6 +147,7 @@ public class Persons {
 
     /**
      * setter first name
+     *
      * @param firstName
      */
     public void setFirstName(final String firstName) {
@@ -147,6 +156,7 @@ public class Persons {
 
     /**
      * setter last name
+     *
      * @param lastName
      */
     public void setLastName(final String lastName) {
@@ -155,6 +165,7 @@ public class Persons {
 
     /**
      * setter phone number
+     *
      * @param phone
      */
     public void setPhone(final String phone) {
@@ -163,6 +174,7 @@ public class Persons {
 
     /**
      * setter ZIP code
+     *
      * @param zip
      */
     public void setZip(final String zip) {
@@ -171,6 +183,7 @@ public class Persons {
 
     /**
      * setter address
+     *
      * @param address
      */
     public void setAddress(final String address) {
@@ -179,6 +192,7 @@ public class Persons {
 
     /**
      * setter city
+     *
      * @param city
      */
     public void setCity(final String city) {
@@ -187,6 +201,7 @@ public class Persons {
 
     /**
      * setter email
+     *
      * @param email
      */
     public void setEmail(final String email) {
@@ -195,10 +210,11 @@ public class Persons {
 
     /**
      * define toString()
+     *
      * @return ""+firstName+" "+lastName+" / "+address+" "+zip+" "+city+" / email: "+email+" / phone: "+phone+"\n"
      */
     @Override
     public String toString() {
-        return ""+firstName+" "+lastName+" / "+address+" "+zip+" "+city+" / email: "+email+" / phone: "+phone+"\n";
+        return "" + firstName + " " + lastName + " / " + address + " " + zip + " " + city + " / email: " + email + " / phone: " + phone + "\n";
     }
 }

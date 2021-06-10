@@ -46,8 +46,8 @@ public class PersonsController {
             LOGGER.info("new person saved : {}",newPerson.toString());
             URI location = ServletUriComponentsBuilder
                     .fromCurrentRequest()
-                    .path("/{firstName}{lastName}")
-                    .buildAndExpand(newPerson.getFirstName(),newPerson.getLastName())
+                    .path("/{phone}")
+                    .buildAndExpand(newPerson.getPhone())
                     .toUri();
             return ResponseEntity.created(location).build();
         }
@@ -78,10 +78,10 @@ public class PersonsController {
             LOGGER.info("person deleted :"+firstName+" "+lastName);
             return ResponseEntity.ok().build();
         } else {
-            RuntimeException e = new NotFoundException("ERROR :"+firstName+" "+lastName+" doesn't exist and cannot be deleted");
-            LOGGER.error(e);
-            throw e;
-            //return ResponseEntity.notFound().build();
+            throw new NotFoundException("ERROR :"+firstName+" "+lastName+" doesn't exist and cannot be deleted");
+            //RuntimeException e = new NotFoundException("ERROR :"+firstName+" "+lastName+" doesn't exist and cannot be deleted");
+            //LOGGER.error(e);
+            //throw e;
         }
     }
 

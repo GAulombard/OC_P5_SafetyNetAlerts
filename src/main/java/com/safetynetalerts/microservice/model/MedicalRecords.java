@@ -29,6 +29,7 @@ public class MedicalRecords {
     private String lastName;
     /**
      * birth date
+     *
      * @see Date
      */
     @Past
@@ -45,17 +46,18 @@ public class MedicalRecords {
     /**
      * default constructor
      */
-    public MedicalRecords(){
+    public MedicalRecords() {
         super();
     }
 
     /**
      * Medical Records constructor
-     * @param firstName first name
-     * @param lastName last name
-     * @param birthDate birth date
+     *
+     * @param firstName  first name
+     * @param lastName   last name
+     * @param birthDate  birth date
      * @param medication list of medications
-     * @param allergies list of allergies
+     * @param allergies  list of allergies
      */
     @JsonCreator
     public MedicalRecords(@JsonProperty("firstname") final String firstName, @JsonProperty("lastname") final String lastName, @JsonDeserialize(using = DateDeserializers.DateDeserializer.class) @JsonSerialize(using = DateSerializer.class) @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MM/dd/yyyy") @JsonProperty("birthdate") final Date birthDate, @JsonProperty("medications") final List<String> medication, @JsonProperty("allergies") final List<String> allergies) {
@@ -68,6 +70,7 @@ public class MedicalRecords {
 
     /**
      * getter first name
+     *
      * @return first name
      */
     public String getFirstName() {
@@ -76,6 +79,7 @@ public class MedicalRecords {
 
     /**
      * setter first name
+     *
      * @param firstName
      */
     public void setFirstName(final String firstName) {
@@ -84,6 +88,7 @@ public class MedicalRecords {
 
     /**
      * getter last name
+     *
      * @return last name
      */
     public String getLastName() {
@@ -92,6 +97,7 @@ public class MedicalRecords {
 
     /**
      * setter last name
+     *
      * @param lastName
      */
     public void setLastName(final String lastName) {
@@ -100,6 +106,7 @@ public class MedicalRecords {
 
     /**
      * getter birth date
+     *
      * @return birth date
      */
     public Date getBirthDate() {
@@ -108,6 +115,7 @@ public class MedicalRecords {
 
     /**
      * setter birth date
+     *
      * @param birthDate
      */
     public void setBirthDate(final Date birthDate) {
@@ -116,6 +124,7 @@ public class MedicalRecords {
 
     /**
      * getter list of medications
+     *
      * @return list of medications
      */
     public List<String> getMedications() {
@@ -124,6 +133,7 @@ public class MedicalRecords {
 
     /**
      * setter list of medications
+     *
      * @param medication
      */
     public void setMedications(final List<String> medication) {
@@ -132,6 +142,7 @@ public class MedicalRecords {
 
     /**
      * getter list of allergies
+     *
      * @return list of allergies
      */
     public List<String> getAllergies() {
@@ -140,6 +151,7 @@ public class MedicalRecords {
 
     /**
      * setter list of allergies
+     *
      * @param allergies
      */
     public void setAllergies(final List<String> allergies) {
@@ -148,10 +160,11 @@ public class MedicalRecords {
 
     /**
      * define toString()
+     *
      * @return ""+firstName+" "+lastName+" / birth date: "+birthDate+" / medications: "+medications+" / allergies: "+allergies+"\n"
      */
     @Override
     public String toString() {
-        return ""+firstName+" "+lastName+" / birth date: "+birthDate+" / medications: "+medications+" / allergies: "+allergies+"\n";
+        return "" + firstName + " " + lastName + " / birth date: " + birthDate + " / medications: " + medications + " / allergies: " + allergies + "\n";
     }
 }

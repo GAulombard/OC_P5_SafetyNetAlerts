@@ -31,23 +31,25 @@ public class FireStations {
     /**
      * default constructor
      */
-    public FireStations(){
+    public FireStations() {
         super();
     }
 
     /**
      * Fire Stations constructor
+     *
      * @param address station address
      * @param station station number
      */
     @JsonCreator
-    public FireStations(@JsonProperty("address") final String address,@JsonProperty("station") final int station) {
+    public FireStations(@JsonProperty("address") final String address, @JsonProperty("station") final int station) {
         this.address = address;
         this.station = station;
     }
 
     /**
      * getter address
+     *
      * @return address
      */
     public String getAddress() {
@@ -56,6 +58,7 @@ public class FireStations {
 
     /**
      * getter station
+     *
      * @return station
      */
     public int getStation() {
@@ -64,6 +67,7 @@ public class FireStations {
 
     /**
      * setter address
+     *
      * @param address
      */
     public void setAddress(final String address) {
@@ -72,6 +76,7 @@ public class FireStations {
 
     /**
      * setter station
+     *
      * @param station
      */
     public void setStation(final int station) {
@@ -80,6 +85,7 @@ public class FireStations {
 
     /**
      * Define toString()
+     *
      * @return "station= " + station + ", address= " + address + "\n"
      */
     @Override
