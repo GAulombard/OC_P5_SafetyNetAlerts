@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
+import javax.validation.constraints.Size;
 
 /**
  * Persons details
@@ -35,6 +36,7 @@ public class Persons {
      */
     @NotBlank(message = "zip needed")
     @Positive(message = "Zip should be positive")
+    @Size(min=5,max=5,message = "ZIP should contains 5 numbers")
     private String zip;
     /**
      * address

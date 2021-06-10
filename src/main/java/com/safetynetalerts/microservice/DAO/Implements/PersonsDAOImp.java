@@ -3,13 +3,13 @@ package com.safetynetalerts.microservice.DAO.Implements;
 import com.safetynetalerts.microservice.DAO.PersonsDAO;
 import com.safetynetalerts.microservice.datasource.DataBase;
 import com.safetynetalerts.microservice.datasource.DataBaseManager;
-import com.safetynetalerts.microservice.exceptions.NotFoundException;
 import com.safetynetalerts.microservice.model.Persons;
 import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @Repository
 public class PersonsDAOImp implements PersonsDAO {
@@ -35,8 +35,16 @@ public class PersonsDAOImp implements PersonsDAO {
 
     @Override
     public boolean save(final Persons person) {
+        AtomicBoolean alreadyExist = new AtomicBoolean(false);
 
-        return persons.add(person);
+        persons.iterator().forEachRemaining(temp -> {
+           if(temp.getLastName().equals(person.getLastName()) && temp.getFirstName().equals(person.getFirstName())) {
+               alreadyExist.set(true);
+           }
+       });
+
+        if(alreadyExist.getAcquire() == true) return false;
+        else return persons.add(person);
     }
 
     @Override

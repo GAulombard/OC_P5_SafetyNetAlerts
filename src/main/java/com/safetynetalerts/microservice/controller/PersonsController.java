@@ -41,7 +41,7 @@ public class PersonsController {
 
 
     @PostMapping(value="person")
-    public ResponseEntity<Void> createPerson(@Valid @RequestBody Persons newPerson) {
+    public ResponseEntity<Void> createPerson(@Valid @RequestBody Persons newPerson) throws AlreadyExistException {
         if(personsDAO.save(newPerson)) {
             LOGGER.info("new person saved : {}",newPerson.toString());
             URI location = ServletUriComponentsBuilder
@@ -55,7 +55,6 @@ public class PersonsController {
             RuntimeException e = new AlreadyExistException("ERROR :"+newPerson.getFirstName()+" "+newPerson.getLastName()+" already exist");
             LOGGER.error(e);
             throw e;
-            //return ResponseEntity.noContent().build();
         }
     }
 
@@ -68,7 +67,6 @@ public class PersonsController {
             RuntimeException e = new NotFoundException("ERROR :"+person.getFirstName()+" "+person.getLastName()+" doesn't exist and cannot be updated");
             LOGGER.error(e);
             throw e;
-            //return ResponseEntity.notFound().build();
         }
     }
 
@@ -78,10 +76,9 @@ public class PersonsController {
             LOGGER.info("person deleted :"+firstName+" "+lastName);
             return ResponseEntity.ok().build();
         } else {
-            throw new NotFoundException("ERROR :"+firstName+" "+lastName+" doesn't exist and cannot be deleted");
-            //RuntimeException e = new NotFoundException("ERROR :"+firstName+" "+lastName+" doesn't exist and cannot be deleted");
-            //LOGGER.error(e);
-            //throw e;
+            RuntimeException e = new NotFoundException("ERROR :"+firstName+" "+lastName+" doesn't exist and cannot be deleted");
+            LOGGER.error(e);
+            throw e;
         }
     }
 

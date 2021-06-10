@@ -4,6 +4,7 @@ import com.safetynetalerts.microservice.DAO.FireStationsDAO;
 import com.safetynetalerts.microservice.DAO.MedicalRecordsDAO;
 import com.safetynetalerts.microservice.DAO.PersonsDAO;
 import com.safetynetalerts.microservice.constants.Constants;
+import com.safetynetalerts.microservice.exceptions.NotFoundException;
 import com.safetynetalerts.microservice.model.DTO.*;
 import com.safetynetalerts.microservice.model.MedicalRecords;
 import com.safetynetalerts.microservice.model.Persons;
@@ -79,8 +80,9 @@ public class URLSController {
             LOGGER.info("All persons covered by the station " + stationNumber + " were found : {}\n", result.toString());
             return result;
         } else {
-            LOGGER.info("No address covered by the station " + stationNumber + " found.");
-            return result;
+            RuntimeException e = new NotFoundException("No address covered by the station " + stationNumber + " found, or station number doesn't exist");
+            LOGGER.error(e);
+            throw e;
         }
 
 
@@ -123,7 +125,9 @@ public class URLSController {
 
             return result;
         } else {
-            return result;
+            RuntimeException e = new NotFoundException("address: " + address + " doesn't exist.");
+            LOGGER.error(e);
+            throw e;
         }
     }
 
@@ -202,11 +206,6 @@ public class URLSController {
                     floodDTO.setPersonInfoMedical(personInfoMedicalDTOList);
                 });
 
-
-                //PersonInfoMedicalDTO personInfoMedicalDTO = new PersonInfoMedicalDTO();
-                //personInfoMedicalDTO.setMedicalBackgroundDTO();
-
-
                 result.add(floodDTO);
             });
 
@@ -218,12 +217,12 @@ public class URLSController {
 
     }
 
-    @GetMapping(value="personInfo")
-    public Set<PersonFullInfoDTO> getAllInformationByFirstAndLastName(@RequestParam(value="firstName") final String firstName,@RequestParam(value="lastName") final String lastName) {
+    @GetMapping(value = "personInfo")
+    public Set<PersonFullInfoDTO> getAllInformationByFirstAndLastName(@RequestParam(value = "firstName") final String firstName, @RequestParam(value = "lastName") final String lastName) {
         Set<PersonFullInfoDTO> result = new HashSet<>();
-        Set<Persons> allPersons = personsDAO.findAllByFirstAndLastName(firstName,lastName);
+        Set<Persons> allPersons = personsDAO.findAllByFirstAndLastName(firstName, lastName);
 
-        if(allPersons!=null) {
+        if (allPersons != null) {
 
             allPersons.iterator().forEachRemaining(person -> {
                 int age = new CalculateAge().calculate(medicalRecordsDAO.findByFirstAndLastName(person.getFirstName(), person.getLastName()));
@@ -252,7 +251,7 @@ public class URLSController {
         List<String> result = new ArrayList<>();
         Set<Persons> allPersons = personsDAO.getListOfAllPersonsByCity(city);
 
-        if (allPersons!=null) {
+        if (allPersons != null) {
             allPersons.iterator().forEachRemaining(person -> {
                 result.add(person.getEmail());
             });
