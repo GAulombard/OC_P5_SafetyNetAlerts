@@ -1,0 +1,14 @@
+{
+  "persons": [
+    { "firstName":"firstName", "lastName":"lastName", "address":"address", "city":"city", "zip":"123", "phone":"123-456-7890", "email":"mail@email.com" },
+    { "firstName":"firstName2", "lastName":"lastName2", "address":"address2", "city":"city", "zip":"123", "phone":"098-765-4321", "email":"test@email.com" }
+  ],
+  "firestations": [
+    { "address":"address", "station":"1" },
+    { "address":"address2", "station":"2" }
+  ],
+  "medicalrecords": [
+    { "firstName":"firstName", "lastName":"lastName", "birthdate":"06/15/1994", "medications":["medication1:300mg", "medication2:100mg"], "allergies":["allergie1", "allergie2", "allergie3"] },
+    { "firstName":"firstName2", "lastName":"lastName2", "birthdate":"06/15/2012", "medications":[], "allergies":[] }
+  ]
+}

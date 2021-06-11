@@ -19,13 +19,13 @@ public class FireStations {
     /**
      * Fire station's address
      */
-    @NotBlank(message = "Address needed")
+    //@NotBlank(message = "Address needed")
     private String address;
     /**
      * Fire station's number
      */
-    @Positive(message = "station number should be positive")
-    @NotBlank(message = "Station number needed")
+    //Positive(message = "station number should be positive")
+    //@NotBlank(message = "Station number needed")
     private int station;
 
     /**

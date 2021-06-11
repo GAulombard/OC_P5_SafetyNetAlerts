@@ -37,8 +37,8 @@ public class FireStationsController {
             LOGGER.info("new fire station saved : {}",newFireStation.toString());
             URI location = ServletUriComponentsBuilder
                     .fromCurrentRequest()
-                    .path("/{address}")
-                    .buildAndExpand(newFireStation.getAddress())
+                    .path("/search/{stationNumber}")
+                    .buildAndExpand(newFireStation.getStation())
                     .toUri();
             return ResponseEntity.created(location).build();
         }
@@ -83,6 +83,13 @@ public class FireStationsController {
             LOGGER.error(e);
             throw e;
         }
+    }
+
+    @GetMapping(value = "firestation/search/{stationNumber}")
+    public Set<FireStations> getFireStationByStationNumber(@PathVariable int stationNumber) throws IOException {
+        Set<FireStations> result = fireStationsDAO.findFireStationsByStationNumber(stationNumber);
+        LOGGER.info("Get the list of all fire stations : \n{}",result.toString());
+        return result;
     }
 
 }

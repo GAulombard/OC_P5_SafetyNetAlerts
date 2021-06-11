@@ -46,8 +46,8 @@ public class PersonsController {
             LOGGER.info("new person saved : {}",newPerson.toString());
             URI location = ServletUriComponentsBuilder
                     .fromCurrentRequest()
-                    .path("/{phone}")
-                    .buildAndExpand(newPerson.getPhone())
+                    .path("/search/{firstName}_{lastName}")
+                    .buildAndExpand(newPerson.getFirstName(),newPerson.getLastName())
                     .toUri();
             return ResponseEntity.created(location).build();
         }
@@ -80,6 +80,11 @@ public class PersonsController {
             LOGGER.error(e);
             throw e;
         }
+    }
+
+    @GetMapping(value = "person/search/{firstName}_{lastName}")
+    public Persons getPersonsByFirstAndLastName(@PathVariable String firstName,@PathVariable String lastName){
+        return personsDAO.findByFirstAndLastName(firstName,lastName);
     }
 
 }

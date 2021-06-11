@@ -15,7 +15,6 @@ public enum DataBaseManager {
 
     DataBaseManager() {
         ObjectMapper objectMapper = new ObjectMapper();
-        //String url = "src/main/resources/data.json";
         URL url = getClass().getClassLoader().getResource("data.json");
         assert url != null;
         File source = new File(url.getFile());
