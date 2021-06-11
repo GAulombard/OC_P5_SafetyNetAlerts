@@ -38,7 +38,7 @@ public class MedicalRecordsController {
             LOGGER.info("new medical record saved : {}", newMedicalRecord.toString());
             URI location = ServletUriComponentsBuilder
                     .fromCurrentRequest()
-                    .path("/{firstName}{lastName}")
+                    .path("/search/{firstName}_{lastName}")
                     .buildAndExpand(newMedicalRecord.getFirstName(), newMedicalRecord.getLastName())
                     .toUri();
             return ResponseEntity.created(location).build();
@@ -74,5 +74,12 @@ public class MedicalRecordsController {
             throw e;
             //return ResponseEntity.notFound().build();
         }
+    }
+
+    @GetMapping(value = "medicalrecord/search/{firstName}_{lastName}")
+    public MedicalRecords getMedicalRecordsByFirstAndLastName(@PathVariable String firstName,@PathVariable String lastName) throws IOException {
+        MedicalRecords result = medicalRecordsDAO.findByFirstAndLastName(firstName,lastName);
+        LOGGER.info("Get medical records for : \n{}", result.toString());
+        return result;
     }
 }
