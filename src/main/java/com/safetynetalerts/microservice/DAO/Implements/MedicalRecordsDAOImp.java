@@ -36,7 +36,7 @@ public class MedicalRecordsDAOImp implements MedicalRecordsDAO {
                 result.add(medicalRecord);
             }
         });
-
+        if(result.isEmpty()) return null;
         return result.iterator().next();
     }
 
