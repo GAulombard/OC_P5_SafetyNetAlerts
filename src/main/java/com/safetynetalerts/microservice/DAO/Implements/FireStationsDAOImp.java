@@ -30,7 +30,7 @@ public class FireStationsDAOImp implements FireStationsDAO {
                 result.add(fireStation);
             }
         }));
-
+        if (result.isEmpty()) return null;
         return result;
     }
 
@@ -43,6 +43,7 @@ public class FireStationsDAOImp implements FireStationsDAO {
             }
         }));
 
+        if(result.isEmpty()) return null;
         return result;
     }
 
@@ -54,19 +55,20 @@ public class FireStationsDAOImp implements FireStationsDAO {
                 result.set(fireStation.getStation());
             }
         }));
-
         return result.get();
     }
 
     @Override
     public boolean deleteFireStationsByNumber(final int stationNumber) {
         Set<FireStations> fireStationsToDelete = findFireStationsByStationNumber(stationNumber);
+        if (fireStationsToDelete==null) return false;
         return fireStations.removeAll(fireStationsToDelete);
     }
 
     @Override
     public boolean deleteFireStationsByAddress(final String stationAddress) {
         Set<FireStations> fireStationsToDelete = findFireStationsByAddress(stationAddress);
+        if (fireStationsToDelete==null) return false;
         return fireStations.removeAll(fireStationsToDelete);
     }
 
@@ -98,6 +100,7 @@ public class FireStationsDAOImp implements FireStationsDAO {
             }
         });
 
+        if(result.isEmpty()) return null;
         return result;
 
     }
@@ -110,7 +113,7 @@ public class FireStationsDAOImp implements FireStationsDAO {
                 result.add(fireStation.getAddress());
             }
         }));
-
+        if(result.isEmpty()) return null;
         return result;
     }
 }
