@@ -88,8 +88,14 @@ public class FireStationsController {
     @GetMapping(value = "firestation/search/{stationNumber}")
     public Set<FireStations> getFireStationByStationNumber(@PathVariable int stationNumber) throws IOException {
         Set<FireStations> result = fireStationsDAO.findFireStationsByStationNumber(stationNumber);
-        LOGGER.info("Get the list of all fire stations : \n{}",result.toString());
-        return result;
+        if (result != null) {
+            LOGGER.info("Get the list of all fire stations : \n{}",result.toString());
+            return result;
+        }else {
+            RuntimeException e = new NotFoundException("ERROR : firestations number: " + stationNumber + ", doesn't exist");
+            LOGGER.error(e);
+            throw e;
+        }
     }
 
 }
