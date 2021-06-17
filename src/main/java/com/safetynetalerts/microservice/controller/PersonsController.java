@@ -36,7 +36,11 @@ public class PersonsController {
 
     @GetMapping(value = "person/{phone}")
     public Persons showPersonsByPhone(@PathVariable String phone) throws IOException {
-        return personsDAO.findByPhone(phone);
+        Persons result = personsDAO.findByPhone(phone);
+
+            return result;
+
+
     }
 
 
