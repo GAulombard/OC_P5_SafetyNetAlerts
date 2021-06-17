@@ -32,8 +32,7 @@ public class MedicalRecords {
      *
      * @see Date
      */
-    @Past
-    //@NotBlank(message = "birth date needed")
+    //@Past
     private Date birthDate;
     /**
      * list of medications

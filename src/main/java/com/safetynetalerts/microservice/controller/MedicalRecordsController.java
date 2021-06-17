@@ -35,7 +35,7 @@ public class MedicalRecordsController {
     @PostMapping(value = "medicalrecord")
     public ResponseEntity<Void> createMedicalRecord(@Valid @RequestBody MedicalRecords newMedicalRecord) {
         if (medicalRecordsDAO.save(newMedicalRecord)) {
-            LOGGER.info("new medical record saved : {}", newMedicalRecord.toString());
+            //LOGGER.info("new medical record saved : {}", newMedicalRecord.toString());
             URI location = ServletUriComponentsBuilder
                     .fromCurrentRequest()
                     .path("/search/{firstName}_{lastName}")
@@ -46,15 +46,14 @@ public class MedicalRecordsController {
             RuntimeException e = new AlreadyExistException("ERROR :" + newMedicalRecord.getFirstName() + " " + newMedicalRecord.getLastName() + " already exist");
             LOGGER.error(e);
             throw e;
-            //return ResponseEntity.noContent().build();
         }
     }
 
     @DeleteMapping(value = "medicalrecord/{firstName}_{lastName}")
     public ResponseEntity<Void> deleteMedicalRecord(@PathVariable final String firstName, @PathVariable final String lastName) {
-        String medicalRecordDeleted = medicalRecordsDAO.findByFirstAndLastName(firstName, lastName).toString();
+        //String medicalRecordDeleted = medicalRecordsDAO.findByFirstAndLastName(firstName, lastName).toString();
         if (medicalRecordsDAO.deleteByFirstAndLastName(firstName, lastName)) {
-            LOGGER.info("medical record deleted : {}", medicalRecordDeleted);
+            LOGGER.info("medical record deleted : {}");
             return ResponseEntity.ok().build();
         } else {
             RuntimeException e = new NotFoundException("ERROR : medical record for" + firstName + " " + lastName + " doesn't exist");
@@ -72,14 +71,13 @@ public class MedicalRecordsController {
             RuntimeException e = new NotFoundException("ERROR : medical record for "+medicalRecord.getFirstName()+" "+medicalRecord.getLastName()+" doesn't exist and cannot be updated");
             LOGGER.error(e);
             throw e;
-            //return ResponseEntity.notFound().build();
         }
     }
 
     @GetMapping(value = "medicalrecord/search/{firstName}_{lastName}")
     public MedicalRecords getMedicalRecordsByFirstAndLastName(@PathVariable String firstName,@PathVariable String lastName) throws IOException {
         MedicalRecords result = medicalRecordsDAO.findByFirstAndLastName(firstName,lastName);
-        LOGGER.info("Get medical records for : \n{}", result.toString());
-        return result;
+            //LOGGER.info("Get medical records for : \n{}", result.toString());
+            return result;
     }
 }
