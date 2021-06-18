@@ -1,0 +1,13 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="com in microservice" type="JUnit" factoryName="JUnit" nameIsGenerated="true">
+    <module name="microservice" />
+    <shortenClasspath name="MANIFEST" />
+    <option name="PACKAGE_NAME" value="com" />
+    <option name="MAIN_CLASS_NAME" value="" />
+    <option name="METHOD_NAME" value="" />
+    <option name="TEST_OBJECT" value="package" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
