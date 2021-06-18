@@ -33,10 +33,10 @@ public class MedicalRecordsControllerTest {
         mockMvc.perform(get("/medicalrecords")).andExpect(status().isOk());
     }
 
-    /*
+/*
     @Test
     void createMedicalRecordTest() throws Exception {
-        MedicalRecords medicalRecord = new MedicalRecords("jean","michel",null,null,null);
+        MedicalRecords medicalRecord = new MedicalRecords("firstName","Michel",null,null,null);
         when(medicalRecordsDAO.save(any(MedicalRecords.class))).thenReturn(true);
         mockMvc.perform(post("/medicalrecord")
                 .content(new ObjectMapper().writeValueAsString(medicalRecord))
@@ -53,7 +53,7 @@ public class MedicalRecordsControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isConflict());
     }
-    */
+*/
 
     @Test
     void createMedicalRecordTest_whenInvalidArgument() throws Exception {
@@ -79,7 +79,7 @@ public class MedicalRecordsControllerTest {
         mockMvc.perform(delete("/medicalrecord/{firstName}_{lastName}",firstName,lastName)).andExpect(status().isNotFound());
     }
 
-    /*
+/*
     @Test
     void updateMedicalRecordTest() throws Exception {
         List<String> medications = new ArrayList<>();
@@ -105,7 +105,7 @@ public class MedicalRecordsControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
-    */
+ */
 
     @Test
     void updateMedicalRecordTest_whenInvalidArgument() throws Exception {
@@ -120,16 +120,23 @@ public class MedicalRecordsControllerTest {
                 .andExpect(status().isBadRequest());
     }
 
+
     @Test
     void getMedicalRecordsByFirstAndLastNameTest() throws Exception {
         String firstName = "firstName", lastName = "lastName";
+        MedicalRecords medicalRecord = new MedicalRecords(firstName,lastName,null,null,null);
+        when(medicalRecordsDAO.findByFirstAndLastName(any(String.class),any(String.class))).thenReturn(medicalRecord);
         mockMvc.perform(get("/medicalrecord/search/{firstName}_{lastName}",firstName,lastName)).andExpect(status().isOk());
     }
 
-    /*
+
     @Test
     void getMedicalRecordsByFirstAndLastNameTest_whenUnknown() throws Exception {
         String firstName = "first", lastName = "Name";
+        MedicalRecords medicalRecord = new MedicalRecords(firstName,lastName,null,null,null);
+        when(medicalRecordsDAO.findByFirstAndLastName(any(String.class),any(String.class))).thenReturn(null);
         mockMvc.perform(get("/medicalrecord/search/{firstName}_{lastName}",firstName,lastName)).andExpect(status().isNotFound());
-    }*/
+    }
+
+
 }

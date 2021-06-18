@@ -28,14 +28,14 @@ public class MedicalRecordsController {
     @GetMapping(value = "medicalrecords")
     public Set<MedicalRecords> showListMedicalRecords() throws IOException {
         Set<MedicalRecords> result = medicalRecordsDAO.findAll();
-        LOGGER.info("Get the list of all medical records : \n{}", result.toString());
+        LOGGER.info("List of all medical records generated");
         return result;
     }
 
     @PostMapping(value = "medicalrecord")
     public ResponseEntity<Void> createMedicalRecord(@Valid @RequestBody MedicalRecords newMedicalRecord) {
         if (medicalRecordsDAO.save(newMedicalRecord)) {
-            //LOGGER.info("new medical record saved : {}", newMedicalRecord.toString());
+            LOGGER.info("New medical record saved");
             URI location = ServletUriComponentsBuilder
                     .fromCurrentRequest()
                     .path("/search/{firstName}_{lastName}")
@@ -43,7 +43,7 @@ public class MedicalRecordsController {
                     .toUri();
             return ResponseEntity.created(location).build();
         } else {
-            RuntimeException e = new AlreadyExistException("ERROR :" + newMedicalRecord.getFirstName() + " " + newMedicalRecord.getLastName() + " already exist");
+            RuntimeException e = new AlreadyExistException("ERROR : Medical record for: " + newMedicalRecord.getFirstName() + " " + newMedicalRecord.getLastName() + ", already exist");
             LOGGER.error(e);
             throw e;
         }
@@ -51,12 +51,11 @@ public class MedicalRecordsController {
 
     @DeleteMapping(value = "medicalrecord/{firstName}_{lastName}")
     public ResponseEntity<Void> deleteMedicalRecord(@PathVariable final String firstName, @PathVariable final String lastName) {
-        //String medicalRecordDeleted = medicalRecordsDAO.findByFirstAndLastName(firstName, lastName).toString();
         if (medicalRecordsDAO.deleteByFirstAndLastName(firstName, lastName)) {
-            LOGGER.info("medical record deleted : {}");
+            LOGGER.info("Medical record deleted");
             return ResponseEntity.ok().build();
         } else {
-            RuntimeException e = new NotFoundException("ERROR : medical record for" + firstName + " " + lastName + " doesn't exist");
+            RuntimeException e = new NotFoundException("ERROR : Medical record for" + firstName + " " + lastName + ", doesn't exist");
             LOGGER.error(e);
             throw e;
         }
@@ -65,10 +64,10 @@ public class MedicalRecordsController {
     @PutMapping(value="medicalrecord")
     public ResponseEntity<Void> updateMedicalRecord(@Valid @RequestBody MedicalRecords medicalRecord) {
         if(medicalRecordsDAO.update(medicalRecord)) {
-            LOGGER.info("medical record updated : {}",medicalRecord.toString());
+            LOGGER.info("Medical record updated");
             return ResponseEntity.ok().build();
         } else {
-            RuntimeException e = new NotFoundException("ERROR : medical record for "+medicalRecord.getFirstName()+" "+medicalRecord.getLastName()+" doesn't exist and cannot be updated");
+            RuntimeException e = new NotFoundException("ERROR : Medical record for: "+medicalRecord.getFirstName()+" "+medicalRecord.getLastName()+", doesn't exist and cannot be updated");
             LOGGER.error(e);
             throw e;
         }
@@ -76,8 +75,15 @@ public class MedicalRecordsController {
 
     @GetMapping(value = "medicalrecord/search/{firstName}_{lastName}")
     public MedicalRecords getMedicalRecordsByFirstAndLastName(@PathVariable String firstName,@PathVariable String lastName) throws IOException {
-        MedicalRecords result = medicalRecordsDAO.findByFirstAndLastName(firstName,lastName);
-            //LOGGER.info("Get medical records for : \n{}", result.toString());
-            return result;
+            MedicalRecords result = medicalRecordsDAO.findByFirstAndLastName(firstName,lastName);
+
+            if(result !=null) {
+                LOGGER.info("Get medical records for : "+firstName+" "+lastName);
+                return result;
+            }else {
+                RuntimeException e = new NotFoundException("ERROR : Medical record for: "+firstName+" "+lastName+", doesn't exist and cannot be updated");
+                LOGGER.error(e);
+                throw e;
+            }
     }
 }

@@ -75,7 +75,7 @@ public class URLSController {
             result.setNbrChildren(nbrChildren);
             result.setPersons(personInfoDTOList);
 
-            LOGGER.info("All persons covered by the station " + stationNumber + " were found : {}\n", result.toString());
+            LOGGER.info("List of all persons covered by the station " + stationNumber + " generated");
             return result;
         } else {
             RuntimeException e = new NotFoundException("No address covered by the station " + stationNumber + " found, or station number doesn't exist");
@@ -120,7 +120,7 @@ public class URLSController {
                 childAlertDTO.setOtherMembers(otherMemberDTO);
                 result.add(childAlertDTO);
             });
-
+            LOGGER.info("List of children by address generated");
             return result;
         } else {
             RuntimeException e = new NotFoundException("address: " + address + " doesn't exist.");
@@ -143,9 +143,10 @@ public class URLSController {
             allPersons.iterator().forEachRemaining(person -> {
                 result.add(person.getPhone());
             });
-
+            LOGGER.info("List of phones generated");
             return result;
         } else {
+            LOGGER.error("ERROR: Station number: "+stationNumber+" doesn't exist");
             return result;
         }
 
@@ -170,9 +171,10 @@ public class URLSController {
 
                 result.add(fireDTO);
             });
-
+            LOGGER.info("List of persons by address and station number generated");
             return result;
         } else {
+            LOGGER.error("ERROR: address: "+address+" doesn't exist");
             return result;
         }
 
@@ -206,9 +208,10 @@ public class URLSController {
 
                 result.add(floodDTO);
             });
-
+            LOGGER.info("List of homes by station number generated");
             return result;
         } else {
+            LOGGER.error("ERROR: station number: "+stationNumber+" doesn't exist");
             return result;
         }
 
@@ -236,9 +239,10 @@ public class URLSController {
 
                 result.add(personFullInfoDTO);
             });
-
+            LOGGER.info("Information by first and last name generated");
             return result;
         } else {
+            LOGGER.error("ERROR: person: "+firstName+" "+lastName+", doesn't exist and cannot generated information");
             return result;
         }
 
@@ -253,9 +257,10 @@ public class URLSController {
             allPersons.iterator().forEachRemaining(person -> {
                 result.add(person.getEmail());
             });
-
+            LOGGER.info("List of eMail generated");
             return result;
         } else {
+            LOGGER.error("ERROR: city: "+city+", doesn't exist");
             return result;
         }
     }

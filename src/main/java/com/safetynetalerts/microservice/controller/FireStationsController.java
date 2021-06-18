@@ -27,14 +27,14 @@ public class FireStationsController {
     @GetMapping(value = "firestations")
     public Set<FireStations> showListFireStations() throws IOException {
         Set<FireStations> result = fireStationsDAO.findAll();
-        LOGGER.info("Get the list of all fire stations : \n{}",result.toString());
+        LOGGER.info("List of all fire stations generated");
         return result;
     }
 
     @PostMapping(value="firestation")
     public ResponseEntity<Void> createFireStation(@Valid @RequestBody FireStations newFireStation) {
         if(fireStationsDAO.save(newFireStation)) {
-            LOGGER.info("new fire station saved : {}",newFireStation.toString());
+            LOGGER.info("New fire station saved");
             URI location = ServletUriComponentsBuilder
                     .fromCurrentRequest()
                     .path("/search/{stationNumber}")
@@ -43,7 +43,7 @@ public class FireStationsController {
             return ResponseEntity.created(location).build();
         }
         else {
-            RuntimeException e = new AlreadyExistException("ERROR : station" + newFireStation.getStation() + " " + newFireStation.getAddress() + " already exist");
+            RuntimeException e = new AlreadyExistException("ERROR : station: " + newFireStation.getStation() + ", at " + newFireStation.getAddress() + " already exist");
             LOGGER.error(e);
             throw e;
         }
@@ -52,10 +52,10 @@ public class FireStationsController {
     @DeleteMapping(value="firestation/station/{station}")
     public ResponseEntity<Void> deleteByStation(@PathVariable final int station) {
         if(fireStationsDAO.deleteFireStationsByNumber(station)) {
-            LOGGER.info(" fire stations deleted");
+            LOGGER.info("Fire station deleted");
             return ResponseEntity.ok().build();
         } else {
-            RuntimeException e = new NotFoundException("ERROR : firestation " + station + " doesn't exist");
+            RuntimeException e = new NotFoundException("ERROR : firestation number: " + station + ", doesn't exist");
             LOGGER.error(e);
             throw e;
         }
@@ -64,10 +64,10 @@ public class FireStationsController {
     @DeleteMapping(value="firestation/address/{address}")
     public ResponseEntity<Void> deleteByAddress(@PathVariable final String address) {
         if(fireStationsDAO.deleteFireStationsByAddress(address)) {
-            LOGGER.info(" fire stations deleted");
+            LOGGER.info("Fire stations deleted");
             return ResponseEntity.ok().build();
         } else {
-            RuntimeException e = new NotFoundException("ERROR : firestation " + address + " doesn't exist");
+            RuntimeException e = new NotFoundException("ERROR : firestation at: " + address + ", doesn't exist");
             LOGGER.error(e);
             throw e;
         }
@@ -76,10 +76,10 @@ public class FireStationsController {
     @PutMapping(value="firestation")
     public ResponseEntity<Void> updateStationNumber(@Valid @RequestBody final FireStations fireStation) {
         if(fireStationsDAO.update(fireStation)) {
-            LOGGER.info(" fire station updated");
+            LOGGER.info("Fire station updated");
             return ResponseEntity.ok().build();
         } else {
-            RuntimeException e = new NotFoundException("ERROR : firestation " + fireStation.toString() + " doesn't exist");
+            RuntimeException e = new NotFoundException("ERROR : firestation: " + fireStation.getStation()+" at,"+fireStation.getAddress() + " doesn't exist");
             LOGGER.error(e);
             throw e;
         }
@@ -89,10 +89,10 @@ public class FireStationsController {
     public Set<FireStations> getFireStationByStationNumber(@PathVariable int stationNumber) throws IOException {
         Set<FireStations> result = fireStationsDAO.findFireStationsByStationNumber(stationNumber);
         if (result != null) {
-            LOGGER.info("Get the list of all fire stations : \n{}",result.toString());
+            LOGGER.info("List of all fire stations at number : "+stationNumber+" generated");
             return result;
         }else {
-            RuntimeException e = new NotFoundException("ERROR : firestations number: " + stationNumber + ", doesn't exist");
+            RuntimeException e = new NotFoundException("ERROR : Station number: " + stationNumber + ", doesn't exist");
             LOGGER.error(e);
             throw e;
         }

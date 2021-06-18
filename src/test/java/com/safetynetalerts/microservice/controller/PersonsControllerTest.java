@@ -32,16 +32,18 @@ public class PersonsControllerTest {
     @Test
     void showPersonsByPhoneTest() throws Exception {
         String phone ="123-456-7890";
+        Persons person = new Persons("firstName","lastName",phone,"123456","address","city","mail@email.com");
+        when(personsDAO.findByPhone(any(String.class))).thenReturn(person);
         mockMvc.perform(get("/person/{phone}",phone)).andExpect(status().isOk());
     }
 
-    /*
     @Test
     void showPersonsByPhoneTest_whenUnknown() throws Exception {
         String phone ="123";
+        when(personsDAO.findByPhone(any(String.class))).thenReturn(null);
         mockMvc.perform(get("/person/{phone}",phone)).andExpect(status().isNotFound());
     }
-    */
+
 
     @Test
     void createPersonTest() throws Exception {
@@ -120,14 +122,17 @@ public class PersonsControllerTest {
     @Test
     void getPersonsByFirstAndLastNameTest() throws Exception {
         String firstName ="firstName", lastName ="lastName";
+        Persons person = new Persons(firstName,lastName,"123456","123-456-7890","address","city","mail@email.com");
+        when(personsDAO.findByFirstAndLastName(any(String.class),any(String.class))).thenReturn(person);
         mockMvc.perform(get("/person/search/{firstName}_{lastName}",firstName,lastName)).andExpect(status().isOk());
     }
 
-    /*
+
     @Test
     void getPersonsByFirstAndLastNameTest_whenNotFound() throws Exception {
         String firstName ="first", lastName ="Name";
+        when(personsDAO.findByFirstAndLastName(any(String.class),any(String.class))).thenReturn(null);
         mockMvc.perform(get("/person/search/{firstName}_{lastName}",firstName,lastName)).andExpect(status().isNotFound());
     }
-    */
+
 }

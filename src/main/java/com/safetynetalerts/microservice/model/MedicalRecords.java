@@ -32,7 +32,6 @@ public class MedicalRecords {
      *
      * @see Date
      */
-    //@Past
     private Date birthDate;
     /**
      * list of medications

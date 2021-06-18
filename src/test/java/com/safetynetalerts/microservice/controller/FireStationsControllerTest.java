@@ -13,6 +13,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.awt.*;
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -129,15 +131,20 @@ public class FireStationsControllerTest {
     @Test
     void getFireStationByStationNumberTest() throws Exception {
         int stationNumber = 1;
+        FireStations fireStation = new FireStations("address",1);
+        Set<FireStations> list = new HashSet<>();
+        list.add(fireStation);
+        when(fireStationsDAO.findFireStationsByStationNumber(any(int.class))).thenReturn(list);
         mockMvc.perform(get("/firestation/search/{stationNumber}",stationNumber)).andExpect(status().isOk());
 
     }
-/*
+
     @Test
     void getFireStationByStationNumberTest_whenUnknown() throws Exception {
-        int stationNumber = 17789;
+        int stationNumber = 5;
+        when(fireStationsDAO.findFireStationsByStationNumber(any(int.class))).thenReturn(null);
         mockMvc.perform(get("/firestation/search/{stationNumber}",stationNumber)).andExpect(status().isNotFound());
     }
 
- */
+
 }
