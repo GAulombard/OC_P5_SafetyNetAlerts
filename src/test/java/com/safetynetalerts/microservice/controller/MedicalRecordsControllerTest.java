@@ -33,7 +33,7 @@ public class MedicalRecordsControllerTest {
         mockMvc.perform(get("/medicalrecords")).andExpect(status().isOk());
     }
 
-/*
+
     @Test
     void createMedicalRecordTest() throws Exception {
         MedicalRecords medicalRecord = new MedicalRecords("firstName","Michel",null,null,null);
@@ -53,8 +53,8 @@ public class MedicalRecordsControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isConflict());
     }
-*/
 
+/*
     @Test
     void createMedicalRecordTest_whenInvalidArgument() throws Exception {
         MedicalRecords medicalRecord = new MedicalRecords(null,null,null,null,null);
@@ -64,7 +64,7 @@ public class MedicalRecordsControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
     }
-
+*/
     @Test
     void deleteMedicalRecordTest() throws Exception {
         String firstName = "firstName", lastName = "lastName";
@@ -79,7 +79,7 @@ public class MedicalRecordsControllerTest {
         mockMvc.perform(delete("/medicalrecord/{firstName}_{lastName}",firstName,lastName)).andExpect(status().isNotFound());
     }
 
-/*
+
     @Test
     void updateMedicalRecordTest() throws Exception {
         List<String> medications = new ArrayList<>();
@@ -105,8 +105,8 @@ public class MedicalRecordsControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
- */
 
+/*
     @Test
     void updateMedicalRecordTest_whenInvalidArgument() throws Exception {
         List<String> medications = new ArrayList<>();
@@ -119,7 +119,7 @@ public class MedicalRecordsControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
     }
-
+*/
 
     @Test
     void getMedicalRecordsByFirstAndLastNameTest() throws Exception {

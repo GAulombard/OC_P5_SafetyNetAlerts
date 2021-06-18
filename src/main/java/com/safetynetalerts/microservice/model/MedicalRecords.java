@@ -20,12 +20,12 @@ public class MedicalRecords {
     /**
      * first name
      */
-    @NotBlank(message = "First name needed")
+    //@NotBlank(message = "First name needed")
     private String firstName;
     /**
      * last name
      */
-    @NotBlank(message = "Last name needed")
+    //@NotBlank(message = "Last name needed")
     private String lastName;
     /**
      * birth date

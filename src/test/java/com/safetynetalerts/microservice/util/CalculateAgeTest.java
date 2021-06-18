@@ -38,8 +38,7 @@ public class CalculateAgeTest {
 
     @AfterEach
     void tearDown() {
-        //dataBaseTestService.clearDBTest();
-        //dataBaseTestService.restoreDBTest();
+
     }
 
     @Test

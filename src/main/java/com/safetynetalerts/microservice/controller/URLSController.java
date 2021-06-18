@@ -146,8 +146,9 @@ public class URLSController {
             LOGGER.info("List of phones generated");
             return result;
         } else {
-            LOGGER.error("ERROR: Station number: "+stationNumber+" doesn't exist");
-            return result;
+            RuntimeException e = new NotFoundException("ERROR: Station number: "+stationNumber+" doesn't exist");
+            LOGGER.error(e);
+            throw e;
         }
 
     }
@@ -174,8 +175,9 @@ public class URLSController {
             LOGGER.info("List of persons by address and station number generated");
             return result;
         } else {
-            LOGGER.error("ERROR: address: "+address+" doesn't exist");
-            return result;
+            RuntimeException e = new NotFoundException("ERROR: address: "+address+" doesn't exist");
+            LOGGER.error(e);
+            throw e;
         }
 
 
@@ -211,8 +213,9 @@ public class URLSController {
             LOGGER.info("List of homes by station number generated");
             return result;
         } else {
-            LOGGER.error("ERROR: station number: "+stationNumber+" doesn't exist");
-            return result;
+            RuntimeException e = new NotFoundException("ERROR: station number: "+stationNumber+" doesn't exist");
+            LOGGER.error(e);
+            throw e;
         }
 
 
@@ -242,8 +245,9 @@ public class URLSController {
             LOGGER.info("Information by first and last name generated");
             return result;
         } else {
-            LOGGER.error("ERROR: person: "+firstName+" "+lastName+", doesn't exist and cannot generated information");
-            return result;
+            RuntimeException e = new NotFoundException("ERROR: person: "+firstName+" "+lastName+", doesn't exist and cannot generated information");
+            LOGGER.error(e);
+            throw e;
         }
 
     }
@@ -260,8 +264,9 @@ public class URLSController {
             LOGGER.info("List of eMail generated");
             return result;
         } else {
-            LOGGER.error("ERROR: city: "+city+", doesn't exist");
-            return result;
+            RuntimeException e = new NotFoundException("ERROR: city: "+city+", doesn't exist");
+            LOGGER.error(e);
+            throw e;
         }
     }
 }
