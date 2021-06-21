@@ -6,6 +6,7 @@ com.safetynetalerts.microservice.DAO
 com.safetynetalerts.microservice.DAO.Implements
 com.safetynetalerts.microservice.datasource
 com.safetynetalerts.microservice.exceptions
+com.safetynetalerts.microservice.IT
 com.safetynetalerts.microservice.model
 com.safetynetalerts.microservice.model.DTO
 com.safetynetalerts.microservice.util
