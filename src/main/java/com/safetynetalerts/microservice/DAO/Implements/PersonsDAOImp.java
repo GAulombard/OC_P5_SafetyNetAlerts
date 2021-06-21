@@ -13,19 +13,51 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+/**
+ * details for PersonsDAOImp
+ */
 @Repository
 public class PersonsDAOImp implements PersonsDAO {
-
+    /**
+     * LOGGER
+     *
+     * @see Logger
+     */
     private static final Logger LOGGER = LogManager.getLogger(PersonsDAOImp.class);
+    /**
+     * data base
+     *
+     * @see DataBase
+     */
     private DataBase dataBase = DataBaseManager.INSTANCE.getDataBase();
+    /**
+     * persons
+     *
+     * @see Persons
+     */
     private Set<Persons> persons = dataBase.getPersons();
 
+    /**
+     * get a list of all persons
+     *
+     * @return list of all persons
+     * @throws IOException
+     * @see Persons
+     */
     @Override
     public Set<Persons> findAll() throws IOException {
         LOGGER.info("Processing to find all persons");
         return persons;
     }
 
+    /**
+     * find a person by phone
+     *
+     * @param phone phone
+     * @return person
+     * @throws IOException
+     * @see Persons
+     */
     @Override
     public Persons findByPhone(String phone) throws IOException {
         LOGGER.info("Processing to get a person by phone");
@@ -38,21 +70,37 @@ public class PersonsDAOImp implements PersonsDAO {
         return null;
     }
 
+    /**
+     * save a new person
+     * return false if the new person not saved
+     *
+     * @param person person
+     * @return boolean
+     * @see Persons
+     */
     @Override
     public boolean save(final Persons person) {
         LOGGER.info("Processing to save new person");
         AtomicBoolean alreadyExist = new AtomicBoolean(false);
 
         persons.iterator().forEachRemaining(temp -> {
-           if(temp.getLastName().equals(person.getLastName()) && temp.getFirstName().equals(person.getFirstName())) {
-               alreadyExist.set(true);
-           }
-       });
+            if (temp.getLastName().equals(person.getLastName()) && temp.getFirstName().equals(person.getFirstName())) {
+                alreadyExist.set(true);
+            }
+        });
 
-        if(alreadyExist.getAcquire() == true) return false;
+        if (alreadyExist.getAcquire() == true) return false;
         else return persons.add(person);
     }
 
+    /**
+     * update a person
+     * return false if the person not updated
+     *
+     * @param person person
+     * @return boolean
+     * @see Persons
+     */
     @Override
     public boolean update(Persons person) {
         LOGGER.info("Processing to update a person");
@@ -62,6 +110,14 @@ public class PersonsDAOImp implements PersonsDAO {
 
     }
 
+    /**
+     * find a person by first and last name
+     *
+     * @param firstName first name
+     * @param lastName  last name
+     * @return person
+     * @see Persons
+     */
     @Override
     public Persons findByFirstAndLastName(final String firstName, final String lastName) {
         LOGGER.info("Processing to find a person by first and last name");
@@ -75,6 +131,14 @@ public class PersonsDAOImp implements PersonsDAO {
         return result.iterator().next();
     }
 
+    /**
+     * delete a person by first and last name
+     * return false if the person not deleted
+     *
+     * @param firstName first name
+     * @param lastName  last name
+     * @return boolean
+     */
     @Override
     public boolean deleteByFirstAndLastName(final String firstName, final String lastName) {
         LOGGER.info("Processing to delete a person by first and last name");
@@ -86,6 +150,13 @@ public class PersonsDAOImp implements PersonsDAO {
 
     }
 
+    /**
+     * get a list of all persons by address
+     *
+     * @param address address
+     * @return list of persons
+     * @see Persons
+     */
     @Override
     public Set<Persons> getListOfAllPersonsByAddress(final String address) {
         LOGGER.info("Processing to find all persons by address");
@@ -99,6 +170,13 @@ public class PersonsDAOImp implements PersonsDAO {
         return result;
     }
 
+    /**
+     * find a person by address
+     *
+     * @param address address
+     * @return person
+     * @see Persons
+     */
     @Override
     public Set<Persons> findPersonsByAddress(String address) {
         LOGGER.info("Processing to find persons at address");
@@ -112,6 +190,14 @@ public class PersonsDAOImp implements PersonsDAO {
         return result;
     }
 
+    /**
+     * find a list of persons by first and last name
+     *
+     * @param firstName first name
+     * @param lastName  last name
+     * @return list of persons
+     * @see Persons
+     */
     @Override
     public Set<Persons> findAllByFirstAndLastName(final String firstName, final String lastName) {
         LOGGER.info("Processing to find all persons by first and last name");
@@ -125,6 +211,13 @@ public class PersonsDAOImp implements PersonsDAO {
         return result;
     }
 
+    /**
+     * get a list of persons by city
+     *
+     * @param city city
+     * @return list of persons
+     * @see Persons
+     */
     @Override
     public Set<Persons> getListOfAllPersonsByCity(final String city) {
         LOGGER.info("Processing to find all persons by city");

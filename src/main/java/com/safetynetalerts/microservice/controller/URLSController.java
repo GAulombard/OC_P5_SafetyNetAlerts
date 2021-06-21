@@ -21,19 +21,47 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-
+/**
+ * details for URLSController
+ */
 @RestController
 public class URLSController {
-
+    /**
+     * LOGGER
+     *
+     * @see Logger
+     */
     private static final Logger LOGGER = LogManager.getLogger(PersonsController.class);
-
+    /**
+     * persons DAO
+     *
+     * @see PersonsDAO
+     */
     @Autowired
     private PersonsDAO personsDAO;
+    /**
+     * fire stations DAO
+     *
+     * @see FireStationsDAO
+     */
     @Autowired
     private FireStationsDAO fireStationsDAO;
+    /**
+     * medical records DAO
+     *
+     * @see MedicalRecordsDAO
+     */
     @Autowired
     private MedicalRecordsDAO medicalRecordsDAO;
 
+    /**
+     * get a list of persons covered by the fire station number. This list include children countdown
+     * return Http status 404 - Not Found if the station number not found then throw NotFoundException
+     *
+     * @param stationNumber station number
+     * @return Http status 200 - OK
+     * @see PersonsCoveredByStationListDTO
+     */
     @GetMapping(value = "firestation")
     public PersonsCoveredByStationListDTO getListOfPersonsCoveredByStationNumber(@RequestParam(value = "stationNumber") final int stationNumber) {
         PersonsCoveredByStationListDTO result = new PersonsCoveredByStationListDTO();
@@ -86,6 +114,14 @@ public class URLSController {
 
     }
 
+    /**
+     * get a list of children by address
+     * return Http status 404 - Not Found if the address not found then throw NotFoundException
+     *
+     * @param address address
+     * @return Http status 200 - OK
+     * @see ChildAlertDTO
+     */
     @GetMapping(value = "childAlert")
     public Set<ChildAlertDTO> getListOfChildrenByAddress(@RequestParam(value = "address") final String address) {
         Set<ChildAlertDTO> result = new HashSet<>();
@@ -129,6 +165,13 @@ public class URLSController {
         }
     }
 
+    /**
+     * get a list of phone number covered by fire station number
+     * return Http status 404 - Not Found if the fire station number not found then throw NotFoundException
+     *
+     * @param stationNumber station number
+     * @return Http status 200 - OK
+     */
     @GetMapping(value = "phoneAlert")
     public Set<String> getAllPhoneByStationNumber(@RequestParam(value = "firestation") final int stationNumber) {
         Set<String> result = new HashSet<>();
@@ -146,13 +189,21 @@ public class URLSController {
             LOGGER.info("List of phones generated");
             return result;
         } else {
-            RuntimeException e = new NotFoundException("ERROR: Station number: "+stationNumber+" doesn't exist");
+            RuntimeException e = new NotFoundException("ERROR: Station number: " + stationNumber + " doesn't exist");
             LOGGER.error(e);
             throw e;
         }
 
     }
 
+    /**
+     * get a list of person by address and the station number covering this address
+     * return Http status 404 - Not Found if the address not found then throw NotFoundException
+     *
+     * @param address address
+     * @return Http status 200 - OK
+     * @see FireDTO
+     */
     @GetMapping(value = "fire")
     public Set<FireDTO> getPersonsByAddressAndStation(@RequestParam(value = "address") final String address) {
         Set<FireDTO> result = new HashSet<>();
@@ -175,7 +226,7 @@ public class URLSController {
             LOGGER.info("List of persons by address and station number generated");
             return result;
         } else {
-            RuntimeException e = new NotFoundException("ERROR: address: "+address+" doesn't exist");
+            RuntimeException e = new NotFoundException("ERROR: address: " + address + " doesn't exist");
             LOGGER.error(e);
             throw e;
         }
@@ -183,7 +234,14 @@ public class URLSController {
 
     }
 
-
+    /**
+     * get homes by fire station number
+     * return Http status 404 - Not Found if the station number not found then throw NotFoundException
+     *
+     * @param stationNumber station number
+     * @return Http status 200 - OK
+     * @see FloodDTO
+     */
     @GetMapping(value = "flood/stations")
     public Set<FloodDTO> getHomesByStationsNumber(@RequestParam(value = "stations") final int stationNumber) {
         Set<FloodDTO> result = new HashSet<>();
@@ -213,7 +271,7 @@ public class URLSController {
             LOGGER.info("List of homes by station number generated");
             return result;
         } else {
-            RuntimeException e = new NotFoundException("ERROR: station number: "+stationNumber+" doesn't exist");
+            RuntimeException e = new NotFoundException("ERROR: station number: " + stationNumber + " doesn't exist");
             LOGGER.error(e);
             throw e;
         }
@@ -221,6 +279,15 @@ public class URLSController {
 
     }
 
+    /**
+     * get all personal information by first and last name
+     * return Http status 404 - Not Found if the person not found then throw NotFoundException
+     *
+     * @param firstName first name
+     * @param lastName  last name
+     * @return Http status 200 - OK
+     * @see PersonFullInfoDTO
+     */
     @GetMapping(value = "personInfo")
     public Set<PersonFullInfoDTO> getAllInformationByFirstAndLastName(@RequestParam(value = "firstName") final String firstName, @RequestParam(value = "lastName") final String lastName) {
         Set<PersonFullInfoDTO> result = new HashSet<>();
@@ -245,13 +312,20 @@ public class URLSController {
             LOGGER.info("Information by first and last name generated");
             return result;
         } else {
-            RuntimeException e = new NotFoundException("ERROR: person: "+firstName+" "+lastName+", doesn't exist and cannot generated information");
+            RuntimeException e = new NotFoundException("ERROR: person: " + firstName + " " + lastName + ", doesn't exist and cannot generated information");
             LOGGER.error(e);
             throw e;
         }
 
     }
 
+    /**
+     * get a list of email by city
+     * return Http status 404 - Not Found if the city not found then throw NotFoundException
+     *
+     * @param city city
+     * @return Http status 200 - OK
+     */
     @GetMapping(value = "communityEmail")
     public List<String> getAllEmailByCity(@RequestParam(value = "city") final String city) {
         List<String> result = new ArrayList<>();
@@ -264,7 +338,7 @@ public class URLSController {
             LOGGER.info("List of eMail generated");
             return result;
         } else {
-            RuntimeException e = new NotFoundException("ERROR: city: "+city+", doesn't exist");
+            RuntimeException e = new NotFoundException("ERROR: city: " + city + ", doesn't exist");
             LOGGER.error(e);
             throw e;
         }

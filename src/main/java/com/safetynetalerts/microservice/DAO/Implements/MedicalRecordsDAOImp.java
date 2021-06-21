@@ -15,34 +15,74 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+/**
+ * details for MedicalRecordsDAOImp
+ */
 @Repository
 public class MedicalRecordsDAOImp implements MedicalRecordsDAO {
-
-    private static final Logger LOGGER = LogManager.getLogger(MedicalRecordsDAOImp.class );
+    /**
+     * LOGGER
+     *
+     * @see Logger
+     */
+    private static final Logger LOGGER = LogManager.getLogger(MedicalRecordsDAOImp.class);
+    /**
+     * data base
+     *
+     * @see DataBase
+     */
     private DataBase dataBase = DataBaseManager.INSTANCE.getDataBase();
+    /**
+     * medical records
+     *
+     * @see MedicalRecords
+     */
     private Set<MedicalRecords> medicalRecords = dataBase.getMedicalRecords();
 
+    /**
+     * save a new medical records
+     * return false if the medical records not saved
+     *
+     * @param medicalRecord medical record
+     * @return boolean
+     * @see MedicalRecords
+     */
     @Override
     public boolean save(MedicalRecords medicalRecord) {
         LOGGER.info("Processing to save new Medical record");
         AtomicBoolean alreadyExist = new AtomicBoolean(false);
 
         medicalRecords.iterator().forEachRemaining(temp -> {
-            if(temp.getLastName().equals(medicalRecord.getLastName()) && temp.getFirstName().equals(medicalRecord.getFirstName())) {
+            if (temp.getLastName().equals(medicalRecord.getLastName()) && temp.getFirstName().equals(medicalRecord.getFirstName())) {
                 alreadyExist.set(true);
             }
         });
 
-        if(alreadyExist.getAcquire() == true) return false;
+        if (alreadyExist.getAcquire() == true) return false;
         return medicalRecords.add(medicalRecord);
     }
 
+    /**
+     * get a list of all medical records
+     *
+     * @return list of all medical records
+     * @throws IOException
+     * @see MedicalRecords
+     */
     @Override
     public Set<MedicalRecords> findAll() throws IOException {
         LOGGER.info("Processing to find all Medical Records");
         return medicalRecords;
     }
 
+    /**
+     * find a medical record by first and last name
+     *
+     * @param firstName first name
+     * @param lastName  last name
+     * @return medical record
+     * @see MedicalRecords
+     */
     @Override
     public MedicalRecords findByFirstAndLastName(final String firstName, final String lastName) {
         LOGGER.info("Processing to find medical record by first and last name");
@@ -52,10 +92,18 @@ public class MedicalRecordsDAOImp implements MedicalRecordsDAO {
                 result.add(medicalRecord);
             }
         });
-        if(result.isEmpty()) return null;
+        if (result.isEmpty()) return null;
         return result.iterator().next();
     }
 
+    /**
+     * delete a medical record by first and last name
+     * return false if the medical record not deleted
+     *
+     * @param firstName first name
+     * @param lastName  last name
+     * @return boolean
+     */
     @Override
     public boolean deleteByFirstAndLastName(String firstName, String lastName) {
         LOGGER.info("Processing to delete medical record by first and last name");
@@ -63,6 +111,14 @@ public class MedicalRecordsDAOImp implements MedicalRecordsDAO {
         return medicalRecords.remove(result);
     }
 
+    /**
+     * update a medical record
+     * return false if the medical recorde not updated
+     *
+     * @param medicalRecord medical record
+     * @return boolean
+     * @see MedicalRecords
+     */
     @Override
     public boolean update(MedicalRecords medicalRecord) {
         LOGGER.info("Processing to update medical record");
@@ -71,11 +127,19 @@ public class MedicalRecordsDAOImp implements MedicalRecordsDAO {
         } else return false;
     }
 
+    /**
+     * get a medical background by first and last name
+     *
+     * @param firstName first name
+     * @param lastName  last name
+     * @return medical background
+     * @see MedicalBackgroundDTO
+     */
     @Override
     public MedicalBackgroundDTO getMedicalBackgroundByFirstAndLastName(final String firstName, final String lastName) {
         LOGGER.info("Processing to get medical background by first and last name");
         MedicalBackgroundDTO result = new MedicalBackgroundDTO();
-        MedicalRecords medicalRecords = findByFirstAndLastName(firstName,lastName);
+        MedicalRecords medicalRecords = findByFirstAndLastName(firstName, lastName);
 
         result.setMedicationsList(medicalRecords.getMedications());
         result.setAllergiesList(medicalRecords.getAllergies());

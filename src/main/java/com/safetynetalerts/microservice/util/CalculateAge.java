@@ -11,6 +11,7 @@ public class CalculateAge {
 
     /**
      * Calculate age for a person, from a medical record
+     *
      * @param medicalRecord medical record
      * @return age number
      */

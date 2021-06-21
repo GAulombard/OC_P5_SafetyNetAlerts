@@ -6,13 +6,20 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
+/**
+ * details for DataBaseManager
+ */
 public enum DataBaseManager {
 
     INSTANCE;
-
+    /**
+     * data base
+     */
     private DataBase dataBase;
 
-
+    /**
+     * allows reading the JSON file data base
+     */
     DataBaseManager() {
         ObjectMapper objectMapper = new ObjectMapper();
         URL url = getClass().getClassLoader().getResource("data.json");
@@ -29,6 +36,9 @@ public enum DataBaseManager {
         return dataBase;
     }
 
+    /**
+     * allows writing the JSON file data base
+     */
     //TODO: update DataBase
     public void updateDataBase() {
 
