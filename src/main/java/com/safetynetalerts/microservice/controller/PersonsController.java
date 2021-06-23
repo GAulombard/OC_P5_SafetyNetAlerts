@@ -88,6 +88,8 @@ public class PersonsController {
      */
     @PostMapping(value = "person")
     public ResponseEntity<Void> createPerson(@Valid @RequestBody Persons newPerson) throws AlreadyExistException {
+
+
         if (personsDAO.save(newPerson)) {
             LOGGER.info("New person saved");
             URI location = ServletUriComponentsBuilder
@@ -97,6 +99,9 @@ public class PersonsController {
                     .toUri();
             return ResponseEntity.created(location).build();
         } else {
+            //String e = "ERROR : Person: \" + newPerson.getFirstName() + \" \" + newPerson.getLastName() + \", already exist";
+            //LOGGER.error(e);
+            //throw new AlreadyExistException(e);
             RuntimeException e = new AlreadyExistException("ERROR : Person: " + newPerson.getFirstName() + " " + newPerson.getLastName() + ", already exist");
             LOGGER.error(e);
             throw e;

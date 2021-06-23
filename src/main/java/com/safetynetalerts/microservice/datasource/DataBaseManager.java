@@ -10,7 +10,9 @@ import java.net.URL;
  * details for DataBaseManager
  */
 public enum DataBaseManager {
-
+    /**
+     * enum for singleton pattern
+     */
     INSTANCE;
     /**
      * data base
